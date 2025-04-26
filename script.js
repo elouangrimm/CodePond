@@ -24,14 +24,6 @@ let inputDebounceTimer;
 let styleDebounceTimer; // Separate debounce timer for style changes
 let pondiverseButton = null;
 
-// --- State Variables ---
-let generatedImageDataUrl = null;
-let inputDebounceTimer;
-let styleDebounceTimer;
-let pondiverseButton = null;
-// let detectedLanguage = 'auto'; // No longer needed globally like this
-let isCopying = false;
-
 // --- Style Customization Logic ---
 
 function updateValueDisplay(slider, display, unit) {

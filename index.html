@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CodePond</title>
+
+        <!-- from elouan.xyz -->
+        <link
+            rel="stylesheet"
+            href="https://github.com/elouangrimm/elouan.xyz/blob/62fea835b5efa3ce56eee4b43f43a14c3d79344e/styles/style.css"
+        />
+
+        <link rel="stylesheet" href="style.css" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js"></script>
+        <!-- this is for html ^^^^ -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+        <script src="https://github.com/elouangrimm/elouan.xyz/blob/62fea835b5efa3ce56eee4b43f43a14c3d79344e/scripts/tooltip.js"></script>
+        <!-- tooltip script ^^^^^ -->
+    </head>
+    <body>
+        <h1>CodePond</h1>
+
+        <label for="codeInput"
+            >put
+            <span
+                class="has-tooltip"
+                data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc."
+                >some code</span
+            >
+            in here</label
+        >
+        <textarea
+            id="codeInput"
+            spellcheck="false"
+            placeholder="Paste your code here..."
+        ></textarea>
+
+        <h2>Preview & Image Source</h2>
+        <div id="codePreviewContainer">
+            <pre><code id="codePreview" class="hljs"></code></pre>
+        </div>
+
+        <h3>Preview:</h3>
+        <img
+            id="outputImageDisplay"
+            alt="Generated Code Snippet Image"
+            class="hidden"
+        />
+
+        <script src="script.js"></script>
+        <div id="tooltip-display" class="tooltip" role="tooltip"></div>
+    </body>
+</html>

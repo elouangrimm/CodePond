@@ -1,0 +1,48 @@
+/* styles from elouan.xyz, but we need more styles. */
+#codeInput {
+    width: 100%;
+    min-height: 150px;
+    background-color: var(--stone-800);
+    color: var(--stone-100);
+    border: 1px solid var(--stone-600);
+    padding: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.95em;
+    resize: vertical;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+}
+
+#codePreviewContainer {
+    background-color: var(--stone-900);
+    padding: 20px;
+    border: 1px solid var(--stone-700);
+    border-radius: 5px;
+    overflow: hidden;
+    min-height: 50px;
+    margin-bottom: 1em;
+}
+
+#codePreviewContainer pre {
+    margin: 0;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+#codePreviewContainer pre code {
+    font-family: var(--font-mono);
+    line-height: 1.5;
+}
+
+#outputImageDisplay {
+    margin-top: 1em;
+    max-width: 100%;
+    border: 1px dashed var(--stone-500);
+}
+
+#outputImageDisplay.hidden {
+    display: none;
+}

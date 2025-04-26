@@ -8,7 +8,7 @@ const languageDisplay = document.getElementById('language-display');
 const copyImageButton = document.getElementById('copy-image-button');
 
 // Customization Controls
-const languageSelect = document.getElementById('language-select'); // <-- Add Language Select
+const languageSelect = document.getElementById('language-select');
 const themeSelect = document.getElementById('theme-select');
 const bgColorPicker = document.getElementById('bg-color-picker');
 const paddingSlider = document.getElementById('padding-slider');
@@ -21,24 +21,30 @@ const themeLink = document.getElementById('hljs-theme-link');
 // --- State Variables ---
 let generatedImageDataUrl = null;
 let inputDebounceTimer;
-let styleDebounceTimer; // Separate debounce timer for style changes
-let pondiverseButton = null;
+let styleDebounceTimer;
+let pondiverseButton = null; // Will hold the button created by addPondiverseButton
+let isCopying = false; // Prevent multiple clicks while copying
 
 // --- Style Customization Logic ---
 
 function updateValueDisplay(slider, display, unit) {
-    display.textContent = `${slider.value}${unit}`;
+    if (display) { // Check if display element exists
+        display.textContent = `${slider.value}${unit}`;
+    }
 }
 
 function applyCustomizations() {
-    // Read values from controls
+    // Ensure all elements exist before reading values
+    if (!paddingSlider || !fontSizeSlider || !fontFamilySelect || !bgColorPicker || !themeSelect || !themeLink) {
+        console.error("One or more customization control elements are missing.");
+        return;
+    }
+
     const padding = `${paddingSlider.value}px`;
     const fontSize = `${fontSizeSlider.value}em`;
     const fontFamily = fontFamilySelect.value;
     const bgColor = bgColorPicker.value;
     const selectedTheme = themeSelect.value;
-    // Language selection is handled directly in updatePreviewAndGenerateImage
-    // but changing it should trigger a preview update.
 
     // Update CSS variables
     const rootStyle = document.documentElement.style;
@@ -59,7 +65,7 @@ function applyCustomizations() {
     clearTimeout(styleDebounceTimer);
     styleDebounceTimer = setTimeout(() => {
          console.log("Applying style changes and regenerating image...");
-         updatePreviewAndGenerateImage();
+         updatePreviewAndGenerateImage(); // Make sure this function exists
     }, 250);
 }
 
@@ -67,49 +73,52 @@ function applyCustomizations() {
 // --- Code Snippet Generation Logic ---
 
 async function updatePreviewAndGenerateImage() {
+    // Ensure necessary elements exist
+    if (!codeInput || !codePreview || !languageDisplay || !languageSelect || !codePreviewContainer) {
+        console.error("Core code preview elements are missing.");
+        return;
+    }
+     if (typeof hljs === 'undefined') {
+         console.error("highlight.js (hljs) is not loaded.");
+         return;
+     }
+
     console.log("Updating preview and image...");
     const code = codeInput.value;
-    const selectedLanguage = languageSelect.value; // Get selected language override
+    const selectedLanguage = languageSelect.value;
 
     // 1. Highlight code based on selection
     let result;
     let displayLangText;
 
-    if (code.trim() === '') {
-        // Handle empty input
-        result = { value: '', language: 'plaintext' };
-        displayLangText = 'Detected: plaintext';
-    } else if (selectedLanguage === 'auto') {
-        // Auto-detect language
-        result = hljs.highlightAuto(code);
-        displayLangText = `Detected: ${result.language || 'auto'}`;
-    } else {
-        // Force highlighting with the selected language
-        try {
-            // Check if language is supported before highlighting
+    try {
+        if (code.trim() === '') {
+            result = { value: '', language: 'plaintext' };
+            displayLangText = 'Detected: plaintext';
+        } else if (selectedLanguage === 'auto') {
+            result = hljs.highlightAuto(code);
+            displayLangText = `Detected: ${result.language || 'auto'}`;
+        } else {
             if (hljs.getLanguage(selectedLanguage)) {
-                 result = hljs.highlight(code, { language: selectedLanguage });
+                 result = hljs.highlight(code, { language: selectedLanguage, ignoreIllegals: true }); // Added ignoreIllegals
                  displayLangText = `Language: ${selectedLanguage} (Forced)`;
             } else {
-                 // Fallback if selected language isn't loaded/valid (shouldn't happen with pack)
                  console.warn(`Language "${selectedLanguage}" not recognized by highlight.js. Falling back to auto-detect.`);
                  result = hljs.highlightAuto(code);
                  displayLangText = `Detected: ${result.language || 'auto'} (Fallback)`;
             }
-        } catch (error) {
-            console.error(`Error highlighting with language "${selectedLanguage}":`, error);
-             // Fallback on error during specific language highlight
-            result = hljs.highlightAuto(code);
-            displayLangText = `Detected: ${result.language || 'auto'} (Error Fallback)`;
         }
+    } catch (error) {
+        console.error(`Error during highlighting:`, error);
+        // Fallback to plain text on error
+        result = { value: codeInput.value.replace(/</g, "<").replace(/>/g, ">"), language: 'plaintext' }; // Basic escaping
+        displayLangText = 'Highlighting Error';
     }
 
-    // Update language display text
     languageDisplay.textContent = displayLangText;
 
     // 2. Update preview content
     codePreview.innerHTML = result.value;
-    // Apply the correct language class
     codePreview.className = `hljs language-${result.language || selectedLanguage || 'plaintext'}`;
 
 
@@ -117,33 +126,58 @@ async function updatePreviewAndGenerateImage() {
     await new Promise(resolve => setTimeout(resolve, 150));
 
     // 4. Generate image
+    if (typeof html2canvas === 'undefined') {
+         console.error("html2canvas is not loaded.");
+         return; // Stop if html2canvas isn't available
+     }
+
     try {
         const canvas = await html2canvas(codePreviewContainer, {
             backgroundColor: null, scale: 2, logging: false, useCORS: true,
             onclone: (clonedDoc) => {
                 const clonedThemeLink = clonedDoc.getElementById('hljs-theme-link');
-                if (clonedThemeLink) { clonedThemeLink.href = themeLink.href; }
+                if (clonedThemeLink && themeLink) { clonedThemeLink.href = themeLink.href; }
             }
         });
 
-        // 5. Get Data URL
         generatedImageDataUrl = canvas.toDataURL('image/png');
 
         // 6. Update display & Enable buttons
         if (outputImageDisplay) {
-            if (generatedImageDataUrl) { /*...*/ outputImageDisplay.src = generatedImageDataUrl; outputImageDisplay.classList.remove('hidden'); }
-            else { /*...*/ outputImageDisplay.classList.add('hidden'); }
+            if (generatedImageDataUrl) {
+                outputImageDisplay.src = generatedImageDataUrl;
+                outputImageDisplay.classList.remove('hidden');
+            } else {
+                outputImageDisplay.classList.add('hidden');
+            }
         }
 
+        // Enable buttons only if image generation was successful
         if (generatedImageDataUrl) {
-            if (pondiverseButton && pondiverseButton.disabled) { /*...*/ pondiverseButton.disabled = false; pondiverseButton.textContent = "✶ Share"; pondiverseButton.title = "Share to Pondiverse"; }
-            if (copyImageButton && copyImageButton.disabled) { /*...*/ copyImageButton.disabled = false; copyImageButton.title = "Copy image to clipboard"; copyImageButton.innerHTML = `...Copy Image`; copyImageButton.classList.remove('copied'); } // Reset copy button state
+            if (pondiverseButton && pondiverseButton.disabled) {
+                pondiverseButton.disabled = false;
+                pondiverseButton.textContent = "✶ Share";
+                pondiverseButton.title = "Share to Pondiverse";
+            }
+            if (copyImageButton && copyImageButton.disabled) {
+                copyImageButton.disabled = false;
+                copyImageButton.title = "Copy image to clipboard";
+                copyImageButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em; margin-right: 0.4em;">
+                        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                    </svg>Copy Image`;
+                copyImageButton.classList.remove('copied');
+            }
         }
 
     } catch (error) {
-        console.error("Error generating code image:", error);
+        console.error("Error generating code image with html2canvas:", error);
         generatedImageDataUrl = null;
         if (outputImageDisplay) outputImageDisplay.classList.add('hidden');
+        // Keep buttons disabled if image generation failed
+        if (pondiverseButton) pondiverseButton.disabled = true;
+        if (copyImageButton) copyImageButton.disabled = true;
     }
 }
 
@@ -155,125 +189,305 @@ function handleInput() {
     }, 350);
 }
 
-// Tab Key Handling (Keep as is)
+// Tab Key Handling
 function handleTabKey(event) {
     if (event.key === 'Tab') {
         event.preventDefault();
-        const textarea = event.target; const start = textarea.selectionStart; const end = textarea.selectionEnd; const tabCharacter = '  ';
+        const textarea = event.target;
+        if (!textarea) return;
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const tabCharacter = '  '; // Use 2 spaces for tab
         textarea.value = textarea.value.substring(0, start) + tabCharacter + textarea.value.substring(end);
         textarea.selectionStart = textarea.selectionEnd = start + tabCharacter.length;
+        // Manually trigger input event for debounced update
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     }
 }
 
-// --- Pondiverse Integration Logic (Keep as is) ---
-function addPondiverseButton() { /* ... (no changes needed here) ... */
-    pondiverseButton = document.createElement("button");
-    pondiverseButton.className = "pondiverse-button";
-    pondiverseButton.textContent = "✶ Share";
-    pondiverseButton.disabled = true;
-    pondiverseButton.title = "Generate a code snippet image first to enable sharing";
+// --- Clipboard Copy Logic ---
+async function copyImageToClipboard() {
+    if (!generatedImageDataUrl) {
+        alert("No image has been generated yet!");
+        return;
+    }
+    if (isCopying) {
+        return;
+    }
+    if (!navigator.clipboard || !navigator.clipboard.write) {
+        alert("Clipboard API not supported or not available in this context (try HTTPS).");
+        console.error("Clipboard API (write) not available.");
+        return;
+    }
+    // Ensure copy button exists
+    if (!copyImageButton) return;
 
-    if (pondiverseControlsContainer) {
-        pondiverseControlsContainer.append(pondiverseButton);
-    } else {
-        console.error("Pondiverse controls container not found!");
+    isCopying = true;
+    copyImageButton.disabled = true;
+    const originalButtonHTML = copyImageButton.innerHTML;
+    copyImageButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16" style="vertical-align: -0.125em; margin-right: 0.4em; animation: spin 1s linear infinite;">
+          <path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"/>
+          <path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.5A.5.5 0 0 1 12 8v.5A.5.5 0 0 1 11.5 9h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V10a5 5 0 0 0-9.192-1.518.5.5 0 1 1 .771.636A4 4 0 0 1 8 3z"/>
+        </svg>Copying...`;
+    const spinStyle = document.getElementById('copy-spin-style') || document.createElement('style');
+    if (!spinStyle.id) { // Only add if it doesn't exist
+        spinStyle.id = 'copy-spin-style';
+        spinStyle.textContent = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
+        document.head.appendChild(spinStyle);
     }
 
-    const dialog = document.createElement("dialog");
-    dialog.id = "pondiverse-dialog";
-    dialog.innerHTML = `
-    <form method="dialog">
-      <p>Share your code snippet to the <a href="https://pondiverse.com" target="_blank" rel="noopener noreferrer">Pondiverse</a>?</p>
-      <p><em>(Creations auto-delete after 25 hours)</em></p>
-      <img id="preview-image" src="" alt="Code Snippet Preview">
-      <label for="pondiverse-name">Title</label>
-      <input type="text" id="pondiverse-name" name="name" required autocomplete="off" spellcheck="false" />
-      <input type="hidden" name="data" value="" />
-      <input type="hidden" name="type" value="" />
-      <hgroup class="space">
-          <button type="button" class="secondary cancel">Cancel</button>
-          <button type="submit" class="submit">Publish</button>
-      </hgroup>
-    </form>
-    `;
-    document.body.append(dialog);
+    try {
+        const response = await fetch(generatedImageDataUrl);
+        if (!response.ok) throw new Error(`Failed to fetch image data: ${response.statusText}`);
+        const blob = await response.blob();
+        const item = new ClipboardItem({ [blob.type]: blob });
+        await navigator.clipboard.write([item]);
 
-    const form = dialog.querySelector("form");
-    const previewImage = dialog.querySelector("#preview-image");
-    const nameInput = dialog.querySelector("#pondiverse-name");
-    const cancelButton = dialog.querySelector("button.cancel");
-    const publishButton = dialog.querySelector("button.submit");
-    const hiddenDataInput = dialog.querySelector("input[name='data']");
-    const hiddenTypeInput = dialog.querySelector("input[name='type']");
+        console.log('Image copied to clipboard successfully!');
+        copyImageButton.innerHTML = `
+             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em; margin-right: 0.4em;">
+                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022z"/>
+            </svg>Copied!`;
+        copyImageButton.classList.add('copied');
 
-    previewImage.onerror = () => { previewImage.style.display = "none"; console.warn("Pondiverse preview image failed to load."); };
-    previewImage.onload = () => { previewImage.style.display = "block"; };
-    nameInput.addEventListener("keydown", (e) => { e.stopPropagation(); });
-    cancelButton.addEventListener("click", (e) => { e.stopPropagation(); closePondiverseDialog(); });
-    dialog.addEventListener("click", (event) => { if (event.target === dialog) { closePondiverseDialog(); } });
+        setTimeout(() => {
+            if (copyImageButton && copyImageButton.classList.contains('copied')) { // Check if still in copied state
+                 copyImageButton.innerHTML = originalButtonHTML;
+                 copyImageButton.classList.remove('copied');
+                 copyImageButton.disabled = false;
+                 isCopying = false;
+                 document.getElementById('copy-spin-style')?.remove();
+            }
+        }, 2000);
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const request = {
-            title: nameInput.value,
-            data: hiddenDataInput.value,
-            type: hiddenTypeInput.value,
-            image: previewImage.src,
-        };
-        publishButton.disabled = true; publishButton.textContent = "Publishing..."; publishButton.style.cursor = "not-allowed"; cancelButton.disabled = true;
-        try {
-            const response = await fetch("https://todepond--e03ca2bc21bb11f094e3569c3dd06744.web.val.run", {
-                method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(request),
-            });
-            if (response.ok) { console.log("Successfully published to Pondiverse!"); closePondiverseDialog(); }
-            else { console.error("Pondiverse upload failed:", response.status, await response.text()); alert(`Upload failed (${response.status}). Please try again.`); publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false; }
-        } catch (error) { console.error("Error during Pondiverse fetch:", error); alert("An error occurred while publishing. Check the console."); publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false; }
-    });
-
-    pondiverseButton.addEventListener("click", (e) => { e.stopPropagation(); if (!pondiverseButton.disabled) { openPondiverseDialog(); } });
+    } catch (error) {
+        console.error('Failed to copy image:', error);
+        alert(`Failed to copy image to clipboard. See console for details.\nError: ${error.message}`);
+        if (copyImageButton) {
+             copyImageButton.innerHTML = originalButtonHTML;
+             copyImageButton.disabled = false;
+        }
+        isCopying = false;
+        document.getElementById('copy-spin-style')?.remove();
+    }
 }
-function openPondiverseDialog() { /* ... (no changes needed here) ... */
+
+// --- Pondiverse Integration Logic ---
+function addPondiverseButton() {
+    // Ensure container exists
+     if (!pondiverseControlsContainer) {
+         console.error("Pondiverse controls container (#pondiverse-controls) not found in HTML.");
+         return;
+     }
+
+    pondiverseButton = document.createElement("button");
+    pondiverseButton.className = "pondiverse-button"; // Ensure this class exists in CSS
+    pondiverseButton.textContent = "✶ Share";
+    pondiverseButton.disabled = true; // Start disabled
+    pondiverseButton.title = "Generate a code snippet image first to enable sharing";
+
+    pondiverseControlsContainer.prepend(pondiverseButton); // Add it before the copy button
+
+    // --- Create and Append Dialog (only once) ---
+    let dialog = document.getElementById("pondiverse-dialog");
+    if (!dialog) {
+        dialog = document.createElement("dialog");
+        dialog.id = "pondiverse-dialog";
+        dialog.innerHTML = `
+        <form method="dialog"> <!-- Use method="dialog" for easier closing -->
+          <p>Share your code snippet to the <a href="https://pondiverse.com" target="_blank" rel="noopener noreferrer">Pondiverse</a>?</p>
+          <p><em>(Creations auto-delete after 25 hours)</em></p>
+          <img id="preview-image" src="" alt="Code Snippet Preview" style="display: none;"> <!-- Start hidden -->
+          <label for="pondiverse-name">Title</label>
+          <input type="text" id="pondiverse-name" name="name" required autocomplete="off" spellcheck="false" />
+          <input type="hidden" name="data" value="" />
+          <input type="hidden" name="type" value="" />
+          <hgroup class="space">
+              <button type="button" value="cancel" class="secondary cancel">Cancel</button> <!-- Use value="cancel" -->
+              <button type="submit" value="default" class="submit">Publish</button> <!-- Use value="default" -->
+          </hgroup>
+        </form>
+        `;
+        document.body.append(dialog);
+
+        // --- Attach Dialog Listeners (only once when created) ---
+        const form = dialog.querySelector("form");
+        const previewImage = dialog.querySelector("#preview-image");
+        const nameInput = dialog.querySelector("#pondiverse-name");
+        const cancelButton = dialog.querySelector("button.cancel");
+        // const publishButton = dialog.querySelector("button.submit"); // Referenced within submit handler
+        // const hiddenDataInput = dialog.querySelector("input[name='data']"); // Referenced within open handler
+        // const hiddenTypeInput = dialog.querySelector("input[name='type']"); // Referenced within open handler
+
+        if (previewImage) {
+            previewImage.onerror = () => { previewImage.style.display = "none"; console.warn("Pondiverse preview image failed to load."); };
+            previewImage.onload = () => { previewImage.style.display = "block"; };
+        }
+        if (nameInput) nameInput.addEventListener("keydown", (e) => { e.stopPropagation(); }); // Prevent closing on Enter in input
+        if (cancelButton) cancelButton.addEventListener("click", (e) => { e.stopPropagation(); closePondiverseDialog(); });
+
+        // Close on backdrop click
+        dialog.addEventListener("click", (event) => { if (event.target === dialog) { closePondiverseDialog(); } });
+
+        // Handle form submission
+        if (form) {
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault(); // We handle submission manually
+
+                 const publishButton = form.querySelector("button.submit");
+                 const cancelButton = form.querySelector("button.cancel");
+                 const hiddenDataInput = form.querySelector("input[name='data']");
+                 const hiddenTypeInput = form.querySelector("input[name='type']");
+                 const nameInput = form.querySelector("#pondiverse-name");
+                 const previewImage = form.querySelector("#preview-image");
+
+
+                 // Ensure elements exist before accessing properties
+                 if (!publishButton || !cancelButton || !hiddenDataInput || !hiddenTypeInput || !nameInput || !previewImage) {
+                     console.error("Could not find all necessary elements within the Pondiverse dialog form.");
+                     alert("Dialog error. Cannot submit.");
+                     return;
+                 }
+
+                const request = {
+                    title: nameInput.value,
+                    data: hiddenDataInput.value,
+                    type: hiddenTypeInput.value,
+                    image: previewImage.src,
+                };
+
+                publishButton.disabled = true; publishButton.textContent = "Publishing..."; publishButton.style.cursor = "not-allowed"; cancelButton.disabled = true;
+
+                try {
+                    const response = await fetch("https://todepond--e03ca2bc21bb11f094e3569c3dd06744.web.val.run", {
+                        method: "POST", headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(request),
+                    });
+
+                    if (response.ok) {
+                        console.log("Successfully published to Pondiverse!");
+                        closePondiverseDialog(); // Close on success
+                    } else {
+                        const errorText = await response.text();
+                        console.error("Pondiverse upload failed:", response.status, errorText);
+                        alert(`Upload failed (${response.status}): ${errorText.substring(0, 100)}...`);
+                        // Re-enable buttons on failure
+                        publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false;
+                    }
+                } catch (error) {
+                    console.error("Error during Pondiverse fetch:", error);
+                    alert(`An error occurred while publishing. Check the console.\nError: ${error.message}`);
+                    // Re-enable buttons on fetch error
+                    publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false;
+                }
+            });
+        }
+    } // end if (!dialog)
+
+    // Attach click listener to the button itself
+    if (pondiverseButton) {
+        pondiverseButton.addEventListener("click", (e) => {
+             e.stopPropagation();
+             if (!pondiverseButton.disabled) {
+                 openPondiverseDialog();
+             }
+        });
+    }
+}
+
+function openPondiverseDialog() {
     const dialog = document.getElementById("pondiverse-dialog");
     if (!dialog) { console.error("Pondiverse dialog not found."); return; }
+
+    // Ensure getPondiverseCreation function exists on window
+    if (typeof window.getPondiverseCreation !== 'function') {
+         console.error("window.getPondiverseCreation() is not defined.");
+         alert("Error: Cannot get creation data.");
+         return;
+     }
     const creation = window.getPondiverseCreation();
-    if (!creation || !creation.image) { alert("Please generate the code snippet image first by typing some code."); console.warn("Cannot open Pondiverse dialog: Image data not available."); return; }
-    const previewImage = dialog.querySelector("#preview-image"); const nameInput = dialog.querySelector("#pondiverse-name"); const hiddenDataInput = dialog.querySelector("input[name='data']"); const hiddenTypeInput = dialog.querySelector("input[name='type']"); const publishButton = dialog.querySelector("button.submit"); const cancelButton = dialog.querySelector("button.cancel");
-    previewImage.src = creation.image || ""; previewImage.style.display = creation.image ? 'block' : 'none';
-    hiddenDataInput.value = creation.data || ""; hiddenTypeInput.value = creation.type || "CodePond";
-    nameInput.value = ""; publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false;
-    dialog.showModal(); nameInput.focus();
+
+    if (!creation || !creation.image) {
+        alert("Please generate the code snippet image first (type some code).");
+        console.warn("Cannot open Pondiverse dialog: Image data not available.");
+        return;
+    }
+
+    // Get dialog elements *after* ensuring dialog exists
+    const previewImage = dialog.querySelector("#preview-image");
+    const nameInput = dialog.querySelector("#pondiverse-name");
+    const hiddenDataInput = dialog.querySelector("input[name='data']");
+    const hiddenTypeInput = dialog.querySelector("input[name='type']");
+    const publishButton = dialog.querySelector("button.submit");
+    const cancelButton = dialog.querySelector("button.cancel");
+
+    // Ensure elements exist before using them
+    if (!previewImage || !nameInput || !hiddenDataInput || !hiddenTypeInput || !publishButton || !cancelButton) {
+         console.error("Could not find all necessary elements within the Pondiverse dialog.");
+         alert("Dialog error. Cannot open.");
+         return;
+     }
+
+    previewImage.src = creation.image || "";
+    previewImage.style.display = creation.image ? 'block' : 'none';
+    hiddenDataInput.value = creation.data || "";
+    hiddenTypeInput.value = creation.type || "CodePond";
+    nameInput.value = ""; // Clear previous title
+    publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false;
+
+    dialog.showModal();
+    nameInput.focus();
 }
-function closePondiverseDialog() { /* ... (no changes needed here) ... */
+
+function closePondiverseDialog() {
     const dialog = document.getElementById("pondiverse-dialog");
-    if (dialog) { dialog.close(); }
+    if (dialog && dialog.open) { // Check if it's actually open
+        dialog.close();
+         // Reset button states inside dialog manually if needed when closing via backdrop/ESC
+         const publishButton = dialog.querySelector("button.submit");
+         const cancelButton = dialog.querySelector("button.cancel");
+         if (publishButton) { publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; }
+         if (cancelButton) cancelButton.disabled = false;
+    }
 }
-window.getPondiverseCreation = function() { /* ... (no changes needed here) ... */
-    return { type: "CodePond", data: codeInput.value, image: generatedImageDataUrl };
+
+// Define the function needed by Pondiverse logic
+window.getPondiverseCreation = function() {
+    // Ensure necessary elements exist before accessing value
+    const code = codeInput ? codeInput.value : '';
+    return {
+        type: "CodePond",
+        data: code,
+        image: generatedImageDataUrl // Use the globally stored image URL
+    };
 };
 
+
 // --- Event Listeners ---
-codeInput.addEventListener('input', handleInput);
-codeInput.addEventListener('keydown', handleTabKey);
-
-// Customization Control Listeners
-languageSelect.addEventListener('change', applyCustomizations); // <-- Add listener
-themeSelect.addEventListener('change', applyCustomizations);
-bgColorPicker.addEventListener('input', applyCustomizations);
-paddingSlider.addEventListener('input', applyCustomizations);
-fontSizeSlider.addEventListener('input', applyCustomizations);
-fontFamilySelect.addEventListener('change', applyCustomizations);
-
-// Copy button listener
-copyImageButton.addEventListener('click', copyImageToClipboard);
-
-// --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
-    addPondiverseButton();
-    applyCustomizations(); // Apply initial default styles
-    if (codeInput.value) {
-        updatePreviewAndGenerateImage(); // Generate initial preview/image
+    // Check if elements exist before adding listeners
+    if (codeInput) {
+        codeInput.addEventListener('input', handleInput);
+        codeInput.addEventListener('keydown', handleTabKey);
+    } else { console.error("#codeInput not found."); }
+
+    if (languageSelect) languageSelect.addEventListener('change', applyCustomizations); else { console.error("#language-select not found."); }
+    if (themeSelect) themeSelect.addEventListener('change', applyCustomizations); else { console.error("#theme-select not found."); }
+    if (bgColorPicker) bgColorPicker.addEventListener('input', applyCustomizations); else { console.error("#bg-color-picker not found."); }
+    if (paddingSlider) paddingSlider.addEventListener('input', applyCustomizations); else { console.error("#padding-slider not found."); }
+    if (fontSizeSlider) fontSizeSlider.addEventListener('input', applyCustomizations); else { console.error("#font-size-slider not found."); }
+    if (fontFamilySelect) fontFamilySelect.addEventListener('change', applyCustomizations); else { console.error("#font-family-select not found."); }
+    if (copyImageButton) copyImageButton.addEventListener('click', copyImageToClipboard); else { console.error("#copy-image-button not found."); }
+
+    // --- Initialization ---
+    addPondiverseButton(); // Create the share button and dialog structure
+    applyCustomizations(); // Apply initial default styles from controls
+
+    // Generate initial preview ONLY if code exists
+    if (codeInput && codeInput.value) {
+        updatePreviewAndGenerateImage();
     } else {
+        // Explicitly disable buttons if no initial code
          if(pondiverseButton) pondiverseButton.disabled = true;
          if(copyImageButton) copyImageButton.disabled = true;
     }

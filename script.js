@@ -78,7 +78,6 @@ function applyCustomizations() {
     // Trigger re-highlight and image regeneration
     clearTimeout(styleDebounceTimer);
     styleDebounceTimer = setTimeout(() => {
-        console.log("Applying style changes and regenerating image...");
         updatePreviewAndGenerateImage(); // Make sure this function exists
     }, 250);
 }
@@ -102,13 +101,11 @@ async function updatePreviewAndGenerateImage() {
         return;
     }
 
-    console.log("Updating preview and image...");
     const code = codeInput.value;
     const selectedLanguage = languageSelect.value;
 
     try {
         localStorage.setItem(LOCAL_STORAGE_KEY, code);
-        // console.log("Code saved to localStorage."); // Optional log
     } catch (e) {
         console.error("Failed to save code to localStorage:", e);
         // Handle potential errors (e.g., storage full, privacy settings)
@@ -299,7 +296,6 @@ async function copyImageToClipboard() {
         const item = new ClipboardItem({ [blob.type]: blob });
         await navigator.clipboard.write([item]);
 
-        console.log("Image copied to clipboard successfully!");
         copyImageButton.innerHTML = `
              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: -0.125em; margin-right: 0.4em;">
                 <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022z"/>
@@ -462,7 +458,6 @@ function addPondiverseButton() {
                     );
 
                     if (response.ok) {
-                        console.log("Successfully published to Pondiverse!");
                         closePondiverseDialog(); // Close on success
                     } else {
                         const errorText = await response.text();
@@ -629,9 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const savedCode = localStorage.getItem(LOCAL_STORAGE_KEY);
             if (savedCode !== null) { // Check explicitly for null
                 codeInput.value = savedCode;
-                console.log("Loaded saved code from localStorage.");
             } else {
-                console.log("No saved code found in localStorage.");
             }
         } catch (e) {
             console.error("Failed to load code from localStorage:", e);

@@ -1,4 +1,9 @@
 /* styles from elouan.xyz, but we need more styles. */
+
+:root {
+    --default-highlight: var(--fuchsia);
+}
+
 #codeInput {
     width: 100%;
     min-height: 150px;
@@ -65,9 +70,9 @@
 
 /* Optional: Style for 'Copied!' state */
 #copy-image-button.copied {
-    --color: var(--magenta);
+    --color: var(--default-highlight);
     /* Optionally change background too */
-    /* background-color: var(--magenta); */
+    /* background-color: var(--default-highlight); */
     /* color: var(--stone-950); */
 }
 
@@ -116,7 +121,7 @@
 }
 
 #pondiverse-dialog a {
-    --color: var(--magenta);
+    --color: var(--default-highlight);
 }
 
 #pondiverse-dialog input[type="text"] {
@@ -131,9 +136,9 @@
 }
 
 #pondiverse-dialog input[type="text"]:focus {
-    outline: 2px solid var(--magenta);
+    outline: 2px solid var(--default-highlight);
     outline-offset: 1px;
-    border-color: var(--magenta);
+    border-color: var(--default-highlight);
 }
 
 #pondiverse-dialog button {

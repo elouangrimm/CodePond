@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="style.css" />
 
         <link
+            id="hljs-theme-link"
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css"
         />
@@ -34,13 +35,98 @@
     <body>
         <h1>CodePond</h1>
 
-        <p><label for="codeInput">put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some code</span>in here</label></p>
+        <p>
+            <label for="codeInput"
+                >put<span
+                    class="has-tooltip"
+                    data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc."
+                    >some code</span
+                >in here</label
+            >
+        </p>
         <textarea
             id="codeInput"
             spellcheck="false"
             placeholder="Paste your code here..."
         ></textarea>
         <span id="language-display">Detected: auto</span>
+
+        <div id="customization-controls">
+            <h3>Customize Appearance</h3>
+
+            <div class="control-group">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select">
+                    <option value="vs2015">VS 2015</option>
+                    <option value="atom-one-dark">Atom One Dark</option>
+                    <option value="monokai-sublime">Monokai Sublime</option>
+                    <option value="github-dark">GitHub Dark</option>
+                    <option value="night-owl">Night Owl</option>
+                    <option value="dracula">Dracula</option>
+                    <option value="nord">Nord</option>
+                    <option value="base16/solarized-dark">
+                        Solarized Dark
+                    </option>
+                    <option value="base16/solarized-light">
+                        Solarized Light
+                    </option>
+                    <option value="github">GitHub Light</option>
+                    <option value="atom-one-light">Atom One Light</option>
+                    <!-- Add more themes available on CDN -->
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="bg-color-picker">Background:</label>
+                <input type="color" id="bg-color-picker" value="#1e1e1e" />
+                <!-- Default to VS2015 bg -->
+            </div>
+
+            <div class="control-group">
+                <label for="padding-slider">Padding (px):</label>
+                <input
+                    type="range"
+                    id="padding-slider"
+                    min="0"
+                    max="50"
+                    value="20"
+                    step="1"
+                />
+                <span class="value-display" id="padding-value">20px</span>
+            </div>
+
+            <div class="control-group">
+                <label for="font-size-slider">Font Size (em):</label>
+                <input
+                    type="range"
+                    id="font-size-slider"
+                    min="0.7"
+                    max="1.5"
+                    value="1.0"
+                    step="0.05"
+                />
+                <span class="value-display" id="font-size-value">1.0em</span>
+            </div>
+
+            <div class="control-group">
+                <label for="font-family-select">Font Family:</label>
+                <select id="font-family-select">
+                    <option
+                        value="'JetBrains Mono', 'SF Mono', 'Roboto Mono', 'Cascadia Code', monospace"
+                    >
+                        JetBrains Mono / Default
+                    </option>
+                    <option value="'Fira Code', monospace">Fira Code</option>
+                    <option value="'Source Code Pro', monospace">
+                        Source Code Pro
+                    </option>
+                    <option value="monospace">Monospace (Browser)</option>
+                    <option value="Consolas, 'Courier New', monospace">
+                        Consolas / Courier
+                    </option>
+                </select>
+            </div>
+        </div>
 
         <h2>Preview</h2>
         <div id="codePreviewContainer">

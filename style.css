@@ -13,49 +13,6 @@
     margin-bottom: 1em;
 }
 
-#codePreviewContainer {
-    background-color: var(--stone-900);
-    padding: 20px;
-    border: 1px solid var(--stone-700);
-    border-radius: 5px;
-    overflow: hidden;
-    min-height: 50px;
-    margin-bottom: 1em;
-}
-
-#codePreviewContainer pre {
-    margin: 0;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap: break-word;
-}
-
-#codePreviewContainer pre code {
-    font-family: var(--font-mono);
-    line-height: 1.5;
-}
-
-#codePreviewContainer pre code.hljs {
-    /* Ensure background color is explicitly set for html2canvas, matching the theme */
-     /* For vs2015 theme */
-    background-color: #1E1E1E;
-    /* For monokai-sublime */
-    /* background-color: #23241f; */
-     /* For dracula */
-     /* background-color: #282a36; */
-    /* For atom-one-dark */
-     /* background-color: #282c34; */
-
-    color: #ddd; /* Default text color, theme will override specifics */
-    padding: 1em; /* Add padding inside the code block itself */
-    display: block; /* Make code block take full width */
-    border-radius: 3px; /* Slight rounding inside */
-    font-family: var(--font-mono);
-    line-height: 1.5;
-}
-
 #outputImageDisplay {
     margin-top: 1em;
     max-width: 100%;
@@ -195,4 +152,139 @@
 
 #pondiverse-dialog #preview-image:not([src=""]):not([style*="display: none"]) {
     margin-bottom: 1.5em;
+}
+
+#customization-controls {
+    border: 1px solid var(--stone-700);
+    border-radius: 5px;
+    padding: 1em 1.5em;
+    margin-bottom: 1.5em;
+    background-color: var(--stone-900);
+}
+
+#customization-controls h3 {
+    margin-top: 0;
+    margin-bottom: 1em;
+    font-size: 1.1em;
+    border-bottom: 1px solid var(--stone-700);
+    padding-bottom: 0.5em;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    gap: 1em;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+}
+
+.control-group label {
+    flex-basis: 120px;
+    /* Minimum width for labels */
+    flex-shrink: 0;
+    padding: 0;
+    /* Override default label padding */
+    font-size: 0.9em;
+    color: var(--stone-300);
+}
+
+.control-group input[type="range"],
+.control-group select,
+.control-group input[type="color"] {
+    flex-grow: 1;
+    min-width: 150px;
+    /* Prevent controls from becoming too small */
+}
+
+/* Style range inputs */
+.control-group input[type="range"] {
+    cursor: pointer;
+}
+
+/* Style select dropdowns */
+.control-group select {
+    background-color: var(--stone-800);
+    color: var(--stone-100);
+    border: 1px solid var(--stone-600);
+    padding: 5px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Style color inputs */
+.control-group input[type="color"] {
+    border: 1px solid var(--stone-600);
+    padding: 2px;
+    height: 30px;
+    /* Adjust height */
+    cursor: pointer;
+    background-color: var(--stone-800);
+    /* Background for the input box itself */
+    border-radius: 3px;
+    min-width: 50px;
+    /* Make color picker smaller */
+    flex-grow: 0;
+    /* Don't let it grow too much */
+}
+
+/* Display value next to sliders */
+.value-display {
+    font-size: 0.9em;
+    color: var(--stone-400);
+    min-width: 40px;
+    /* Reserve space */
+    text-align: right;
+}
+
+
+/* --- Preview Area using CSS Variables --- */
+#codePreviewContainer {
+    /* Use CSS variables for dynamic styles */
+    padding: var(--code-padding, 20px);
+    /* Default value */
+    background-color: var(--code-bg-color, var(--stone-900));
+    /* Default value */
+
+    /* Keep other styles */
+    border: 1px solid var(--stone-700);
+    border-radius: 5px;
+    overflow: hidden;
+    min-height: 50px;
+    margin-bottom: 1em;
+    transition: background-color 0.3s ease;
+    /* Smooth background transition */
+}
+
+#codePreviewContainer pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#codePreviewContainer pre code.hljs {
+    /* Use CSS variables for dynamic styles */
+    font-size: var(--code-font-size, 1em);
+    /* Default value */
+    font-family: var(--code-font-family, var(--font-mono));
+    /* Default value */
+
+    /* The background/color is mostly handled by the theme CSS */
+    /* We might need JS to override theme background if needed */
+    /* background-color: transparent; /* Let container handle bg */
+
+    /* Keep other styles */
+    line-height: 1.5;
+    display: block;
+    /* Needed for block-level styling */
+    padding: 0;
+    /* Padding now on container */
+}
+
+/* Ensure .hljs itself doesn't override container background if we set it via var */
+.hljs {
+    background: transparent !important;
+    /* Override theme background */
+    color: inherit;
+    /* Inherit base color unless theme specifies */
 }

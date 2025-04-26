@@ -4,63 +4,121 @@ const codePreview = document.getElementById('codePreview');
 const codePreviewContainer = document.getElementById('codePreviewContainer');
 const outputImageDisplay = document.getElementById('outputImageDisplay');
 const pondiverseControlsContainer = document.getElementById('pondiverse-controls');
-const languageDisplay = document.getElementById('language-display'); // Get the language display element
+const languageDisplay = document.getElementById('language-display');
+
+// Customization Controls
+const themeSelect = document.getElementById('theme-select');
+const bgColorPicker = document.getElementById('bg-color-picker');
+const paddingSlider = document.getElementById('padding-slider');
+const paddingValueDisplay = document.getElementById('padding-value');
+const fontSizeSlider = document.getElementById('font-size-slider');
+const fontSizeValueDisplay = document.getElementById('font-size-value');
+const fontFamilySelect = document.getElementById('font-family-select');
+const themeLink = document.getElementById('hljs-theme-link'); // Get the theme link tag
 
 // --- State Variables ---
 let generatedImageDataUrl = null;
-let debounceTimer;
+let inputDebounceTimer;
+let styleDebounceTimer; // Separate debounce timer for style changes
 let pondiverseButton = null;
-let detectedLanguage = 'auto'; // Store detected language
+let detectedLanguage = 'auto';
+
+// --- Style Customization Logic ---
+
+function updateValueDisplay(slider, display, unit) {
+    display.textContent = `${slider.value}${unit}`;
+}
+
+function applyCustomizations() {
+    // Read values from controls
+    const padding = `${paddingSlider.value}px`;
+    const fontSize = `${fontSizeSlider.value}em`;
+    const fontFamily = fontFamilySelect.value;
+    const bgColor = bgColorPicker.value;
+    const selectedTheme = themeSelect.value;
+
+    // Update CSS variables on the root element (affects elements using them)
+    const rootStyle = document.documentElement.style;
+    rootStyle.setProperty('--code-padding', padding);
+    rootStyle.setProperty('--code-font-size', fontSize);
+    rootStyle.setProperty('--code-font-family', fontFamily);
+    rootStyle.setProperty('--code-bg-color', bgColor);
+
+    // Update Theme Stylesheet
+    const themeBaseUrl = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/';
+    themeLink.href = `${themeBaseUrl}${selectedTheme}.min.css`;
+
+    // Update slider value displays
+    updateValueDisplay(paddingSlider, paddingValueDisplay, 'px');
+    updateValueDisplay(fontSizeSlider, fontSizeValueDisplay, 'em');
+
+    // Trigger a re-highlight and image regeneration (debounced)
+    clearTimeout(styleDebounceTimer);
+    styleDebounceTimer = setTimeout(() => {
+         console.log("Applying style changes and regenerating image...");
+         updatePreviewAndGenerateImage(); // Re-run highlighting and image generation
+    }, 250); // Debounce style updates slightly less aggressively than input
+}
+
 
 // --- Code Snippet Generation Logic ---
 
 async function updatePreviewAndGenerateImage() {
+    console.log("Updating preview and image...");
     const code = codeInput.value;
 
-    // 1. Auto-detect language and get highlighted HTML
+    // 1. Clear previous highlighting classes potentially left by old theme
+    // codePreview.className = 'hljs'; // Reset before applying new highlight
+
+    // 2. Auto-detect language and get highlighted HTML
     let result;
     if (code.trim() === '') {
-        // Handle empty input gracefully
-        result = { value: '', language: 'plaintext' }; // Or 'none', 'auto'
+        result = { value: '', language: 'plaintext' };
     } else {
-        // Use highlightAuto for detection
+         // Force re-highlighting even if code hasn't changed (theme/style might have)
+        // Use highlight() instead of highlightAuto() if language is known,
+        // but highlightAuto is usually fine and handles language changes.
+        // Need to ensure hljs state is clean if themes change rapidly.
+        // Forcing highlight by passing code directly:
         result = hljs.highlightAuto(code);
     }
 
-    // Store and display the detected language
     detectedLanguage = result.language || 'auto';
     languageDisplay.textContent = `Detected: ${detectedLanguage}`;
 
-    // 2. Update preview content with highlighted HTML
+    // 3. Update preview content
     codePreview.innerHTML = result.value;
-
-    // 3. Ensure the main code element has the correct language class (optional but good practice)
+    // Apply the language class *after* setting innerHTML based on result
     codePreview.className = `hljs language-${detectedLanguage}`;
 
-    // 4. Small delay for rendering before capture
-    await new Promise(resolve => setTimeout(resolve, 100));
 
-    // 5. Generate image with html2canvas
+    // 4. Small delay - *May need adjustment after theme loading*
+    // Allow styles (especially new theme) to apply
+    await new Promise(resolve => setTimeout(resolve, 150)); // Slightly longer delay
+
+    // 5. Generate image
     try {
-        // Ensure the container itself has a background for canvas, or rely on codePreview's background
-        const computedStyle = window.getComputedStyle(codePreview); // Get style from code element itself
-        const bgColor = computedStyle.backgroundColor || 'transparent'; // Use code block's background
-
-        const canvas = await html2canvas(codePreviewContainer, { // Capture the container
-            backgroundColor: null, // Let elements inside define background
-             // Ensure the code block's background (set via CSS .hljs) is captured
+        // Capture the container, relying on CSS vars for its style
+        const canvas = await html2canvas(codePreviewContainer, {
+            backgroundColor: null, // Use element's background from CSS var
             scale: 2,
             logging: false,
-            useCORS: true,
-            // It might be necessary to capture the 'codePreview' directly if container bg interferes
-            // const canvas = await html2canvas(codePreview, { ... });
+            useCORS: true, // Needed for web fonts / external assets potentially
+            onclone: (clonedDoc) => {
+                // Attempt to fix theme loading issue for html2canvas in some browsers
+                // Re-apply the theme link href in the cloned document
+                const clonedThemeLink = clonedDoc.getElementById('hljs-theme-link');
+                if (clonedThemeLink) {
+                     clonedThemeLink.href = themeLink.href;
+                }
+            }
         });
 
         // 6. Get Data URL
         generatedImageDataUrl = canvas.toDataURL('image/png');
-        console.log("Generated Image Data URL (stored in generatedImageDataUrl):", generatedImageDataUrl.substring(0, 100) + "...");
+        // console.log("Generated Image Data URL:", generatedImageDataUrl.substring(0, 100) + "...");
 
-        // 7. Update optional image display
+        // 7. Update display
         if (outputImageDisplay) {
             if (generatedImageDataUrl) {
                 outputImageDisplay.src = generatedImageDataUrl;
@@ -70,57 +128,41 @@ async function updatePreviewAndGenerateImage() {
             }
         }
 
-        // 8. Enable the Pondiverse button
+        // 8. Enable Pondiverse button
         if (pondiverseButton && pondiverseButton.disabled) {
             pondiverseButton.disabled = false;
             pondiverseButton.textContent = "✶ Share";
-            pondiverseButton.title = "Share to Pondiverse"; // Update title
+            pondiverseButton.title = "Share to Pondiverse";
         }
 
     } catch (error) {
         console.error("Error generating code image:", error);
         generatedImageDataUrl = null;
         if (outputImageDisplay) outputImageDisplay.classList.add('hidden');
-        // Optionally disable button again on error
-        // if (pondiverseButton) pondiverseButton.disabled = true;
     }
 }
 
 // Debounced input handler
 function handleInput() {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
+    clearTimeout(inputDebounceTimer);
+    inputDebounceTimer = setTimeout(() => {
         updatePreviewAndGenerateImage();
     }, 350);
 }
 
-// --- Tab Key Handling ---
+// Tab Key Handling (Keep as is)
 function handleTabKey(event) {
     if (event.key === 'Tab') {
-        event.preventDefault(); // Prevent default tab behavior (focus change)
-
-        const textarea = event.target;
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const tabCharacter = '  '; // Insert 2 spaces for a tab (or use '\t')
-
-        // Set textarea value to: text before caret + tab + text after caret
-        textarea.value = textarea.value.substring(0, start) +
-                         tabCharacter +
-                         textarea.value.substring(end);
-
-        // Put caret at right position again
+        event.preventDefault();
+        const textarea = event.target; const start = textarea.selectionStart; const end = textarea.selectionEnd; const tabCharacter = '  ';
+        textarea.value = textarea.value.substring(0, start) + tabCharacter + textarea.value.substring(end);
         textarea.selectionStart = textarea.selectionEnd = start + tabCharacter.length;
-
-        // Trigger the input event manually to update the preview
         textarea.dispatchEvent(new Event('input', { bubbles: true }));
     }
 }
 
-
-// --- Pondiverse Integration Logic (Keep as is from previous step) ---
-
-function addPondiverseButton() {
+// --- Pondiverse Integration Logic (Keep as is) ---
+function addPondiverseButton() { /* ... (no changes needed here) ... */
     pondiverseButton = document.createElement("button");
     pondiverseButton.className = "pondiverse-button";
     pondiverseButton.textContent = "✶ Share";
@@ -186,8 +228,7 @@ function addPondiverseButton() {
 
     pondiverseButton.addEventListener("click", (e) => { e.stopPropagation(); if (!pondiverseButton.disabled) { openPondiverseDialog(); } });
 }
-
-function openPondiverseDialog() {
+function openPondiverseDialog() { /* ... (no changes needed here) ... */
     const dialog = document.getElementById("pondiverse-dialog");
     if (!dialog) { console.error("Pondiverse dialog not found."); return; }
     const creation = window.getPondiverseCreation();
@@ -198,26 +239,36 @@ function openPondiverseDialog() {
     nameInput.value = ""; publishButton.disabled = false; publishButton.textContent = "Publish"; publishButton.style.cursor = "pointer"; cancelButton.disabled = false;
     dialog.showModal(); nameInput.focus();
 }
-
-function closePondiverseDialog() {
+function closePondiverseDialog() { /* ... (no changes needed here) ... */
     const dialog = document.getElementById("pondiverse-dialog");
     if (dialog) { dialog.close(); }
 }
-
-window.getPondiverseCreation = function() {
+window.getPondiverseCreation = function() { /* ... (no changes needed here) ... */
     return { type: "CodePond", data: codeInput.value, image: generatedImageDataUrl };
 };
 
 
 // --- Event Listeners ---
 codeInput.addEventListener('input', handleInput);
-codeInput.addEventListener('keydown', handleTabKey); // Add listener for Tab key
+codeInput.addEventListener('keydown', handleTabKey);
+
+// Customization Control Listeners
+themeSelect.addEventListener('change', applyCustomizations);
+bgColorPicker.addEventListener('input', applyCustomizations);
+paddingSlider.addEventListener('input', applyCustomizations);
+fontSizeSlider.addEventListener('input', applyCustomizations);
+fontFamilySelect.addEventListener('change', applyCustomizations);
+
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     addPondiverseButton();
+    applyCustomizations(); // Apply initial default styles from controls
     // Initial highlight if code exists on load
     if (codeInput.value) {
-        updatePreviewAndGenerateImage();
+        updatePreviewAndGenerateImage(); // Generate initial preview/image
+    } else {
+        // Ensure Pondiverse button is disabled initially if no code
+         if(pondiverseButton) pondiverseButton.disabled = true;
     }
 });

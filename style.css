@@ -25,6 +25,50 @@
 
 #pondiverse-controls {
     margin-top: 1.5em;
+    display: flex;
+    /* Align buttons nicely */
+    gap: 1em;
+    /* Space between buttons */
+    flex-wrap: wrap;
+}
+
+#pondiverse-controls button {
+    /* Inherit general button styles from style.css */
+    padding: 0.5em 1em;
+    font-size: 1em;
+    /* Add transition if desired */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+#copy-image-button {
+    --color: var(--cyan);
+    /* Different color for Copy */
+}
+
+/* Disabled state (applies to both) */
+#pondiverse-controls button:disabled {
+    --color: var(--stone-600);
+    background-color: var(--stone-700);
+    color: var(--stone-500);
+    cursor: not-allowed;
+    outline: none;
+    border-color: transparent;
+    /* Hide border when disabled maybe */
+}
+
+#pondiverse-controls button:disabled:hover {
+    background-color: var(--stone-700);
+    /* Prevent hover effect */
+    color: var(--stone-500);
+    outline: none;
+}
+
+/* Optional: Style for 'Copied!' state */
+#copy-image-button.copied {
+    --color: var(--lime);
+    /* Optionally change background too */
+    /* background-color: var(--lime); */
+    /* color: var(--stone-950); */
 }
 
 .pondiverse-button {

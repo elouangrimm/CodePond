@@ -65,9 +65,9 @@
 
 /* Optional: Style for 'Copied!' state */
 #copy-image-button.copied {
-    --color: var(--lime);
+    --color: var(--magenta);
     /* Optionally change background too */
-    /* background-color: var(--lime); */
+    /* background-color: var(--magenta); */
     /* color: var(--stone-950); */
 }
 
@@ -110,14 +110,13 @@
 
 #pondiverse-dialog form {
     background-color: var(--stone-900);
-    border-radius: 8px;
     border: 1px solid var(--stone-700);
     padding: 1.5em 2em;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
 }
 
 #pondiverse-dialog a {
-    --color: var(--lime);
+    --color: var(--magenta);
 }
 
 #pondiverse-dialog input[type="text"] {
@@ -125,7 +124,6 @@
     padding: 10px 15px;
     margin: 0.5em 0 1em 0;
     border: 1px solid var(--stone-600);
-    border-radius: 4px;
     background-color: var(--stone-800);
     color: var(--stone-100);
     font-size: 1em;
@@ -133,16 +131,15 @@
 }
 
 #pondiverse-dialog input[type="text"]:focus {
-    outline: 2px solid var(--lime);
+    outline: 2px solid var(--magenta);
     outline-offset: 1px;
-    border-color: var(--lime);
+    border-color: var(--magenta);
 }
 
 #pondiverse-dialog button {
     font-size: 1em;
     padding: 0.6em 1.2em;
     margin-top: 1em;
-    border-radius: 4px;
 }
 
 #pondiverse-dialog button[type="submit"] {
@@ -187,7 +184,6 @@
     margin: 1em auto;
     display: block;
     border: 1px solid var(--stone-700);
-    border-radius: 4px;
 }
 
 #pondiverse-dialog #preview-image[src=""] {
@@ -200,7 +196,6 @@
 
 #customization-controls {
     border: 1px solid var(--stone-700);
-    border-radius: 5px;
     padding: 1em 1.5em;
     margin-bottom: 1.5em;
     background-color: var(--stone-900);
@@ -252,7 +247,6 @@
     color: var(--stone-100);
     border: 1px solid var(--stone-600);
     padding: 5px 8px;
-    border-radius: 3px;
     cursor: pointer;
 }
 
@@ -265,7 +259,6 @@
     cursor: pointer;
     background-color: var(--stone-800);
     /* Background for the input box itself */
-    border-radius: 3px;
     min-width: 50px;
     /* Make color picker smaller */
     flex-grow: 0;
@@ -292,7 +285,6 @@
 
     /* Keep other styles */
     border: 1px solid var(--stone-700);
-    border-radius: 5px;
     overflow: hidden;
     min-height: 50px;
     margin-bottom: 1em;

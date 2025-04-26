@@ -1,2 +1,3 @@
 # CodePond
-A pretty code renderer that integrates with the pondiverse.
+
+## A pretty code renderer that integrates with the [pondiverse](https://pondiverse.cool/).

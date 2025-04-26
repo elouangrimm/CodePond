@@ -15,7 +15,7 @@
 
         <link
             rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css"
         />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
@@ -34,12 +34,13 @@
     <body>
         <h1>CodePond</h1>
 
-        <label for="codeInput">put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some code</span>in here</label>
+        <p><label for="codeInput">put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some code</span>in here</label></p>
         <textarea
             id="codeInput"
             spellcheck="false"
             placeholder="Paste your code here..."
         ></textarea>
+        <span id="language-display">Detected: auto</span>
 
         <h2>Preview</h2>
         <div id="codePreviewContainer">

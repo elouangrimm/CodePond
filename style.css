@@ -37,6 +37,25 @@
     line-height: 1.5;
 }
 
+#codePreviewContainer pre code.hljs {
+    /* Ensure background color is explicitly set for html2canvas, matching the theme */
+     /* For vs2015 theme */
+    background-color: #1E1E1E;
+    /* For monokai-sublime */
+    /* background-color: #23241f; */
+     /* For dracula */
+     /* background-color: #282a36; */
+    /* For atom-one-dark */
+     /* background-color: #282c34; */
+
+    color: #ddd; /* Default text color, theme will override specifics */
+    padding: 1em; /* Add padding inside the code block itself */
+    display: block; /* Make code block take full width */
+    border-radius: 3px; /* Slight rounding inside */
+    font-family: var(--font-mono);
+    line-height: 1.5;
+}
+
 #outputImageDisplay {
     margin-top: 1em;
     max-width: 100%;

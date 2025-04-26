@@ -34,24 +34,20 @@
     <body>
         <h1>CodePond</h1>
 
-        <label for="codeInput"
-            >put
-            <span
-                class="has-tooltip"
-                data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc."
-                >some code</span
-            >
-            in here</label
-        >
+        <label for="codeInput">put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some code</span>in here</label>
         <textarea
             id="codeInput"
             spellcheck="false"
             placeholder="Paste your code here..."
         ></textarea>
 
-        <h2>Preview & Image Source</h2>
+        <h2>Preview</h2>
         <div id="codePreviewContainer">
             <pre><code id="codePreview" class="hljs"></code></pre>
+        </div>
+
+        <div id="pondiverse-controls">
+            <!-- pondiverse button -->
         </div>
 
         <script src="script.js"></script>

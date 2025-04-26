@@ -324,3 +324,109 @@
     color: inherit;
     /* Inherit base color unless theme specifies */
 }
+
+details#customization-controls {
+    border: 1px solid var(--stone-700);
+    border-radius: 5px;
+    margin-bottom: 1.5em;
+    background-color: var(--stone-900);
+    /* Prevent margin collapse */
+    overflow: hidden;
+    /* Or padding-top: 1px; */
+}
+
+details#customization-controls summary {
+    padding: 0.8em 1.5em;
+    font-family: var(--font-mono);
+    /* Match h3 style */
+    font-size: 1.1em;
+    cursor: pointer;
+    outline: none;
+    /* Remove focus outline from summary */
+    color: var(--stone-200);
+    border-bottom: 1px solid var(--stone-700);
+    /* Separator when open */
+    transition: background-color 0.2s ease;
+    list-style-position: inside;
+    /* Better marker alignment */
+}
+
+details[open]>summary {
+    margin-bottom: 1em;
+    /* Space below summary when open */
+}
+
+details#customization-controls summary:hover {
+    background-color: var(--stone-800);
+}
+
+/* Style the default disclosure triangle */
+details#customization-controls summary::marker {
+    color: var(--stone-400);
+    /* font-size: 0.8em; */
+    /* Adjust size if needed */
+}
+
+/* For Webkit browsers */
+details#customization-controls summary::-webkit-details-marker {
+    color: var(--stone-400);
+}
+
+.customization-content {
+    padding: 0em 1.5em 1em 1.5em;
+    /* Padding for the content area */
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    gap: 1em;
+    flex-wrap: wrap;
+}
+
+.control-group label {
+    flex-basis: 120px;
+    flex-shrink: 0;
+    padding: 0;
+    font-size: 0.9em;
+    color: var(--stone-300);
+}
+
+.control-group input[type="range"],
+.control-group select,
+.control-group input[type="color"] {
+    flex-grow: 1;
+    min-width: 150px;
+}
+
+.control-group input[type="range"] {
+    cursor: pointer;
+}
+
+.control-group select {
+    background-color: var(--stone-800);
+    color: var(--stone-100);
+    border: 1px solid var(--stone-600);
+    padding: 5px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.control-group input[type="color"] {
+    border: 1px solid var(--stone-600);
+    padding: 2px;
+    height: 30px;
+    cursor: pointer;
+    background-color: var(--stone-800);
+    border-radius: 3px;
+    min-width: 50px;
+    flex-grow: 0;
+}
+
+.value-display {
+    font-size: 0.9em;
+    color: var(--stone-400);
+    min-width: 40px;
+    text-align: right;
+}

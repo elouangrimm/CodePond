@@ -5,8 +5,10 @@ const codePreviewContainer = document.getElementById('codePreviewContainer');
 const outputImageDisplay = document.getElementById('outputImageDisplay');
 const pondiverseControlsContainer = document.getElementById('pondiverse-controls');
 const languageDisplay = document.getElementById('language-display');
+const copyImageButton = document.getElementById('copy-image-button');
 
 // Customization Controls
+const languageSelect = document.getElementById('language-select'); // <-- Add Language Select
 const themeSelect = document.getElementById('theme-select');
 const bgColorPicker = document.getElementById('bg-color-picker');
 const paddingSlider = document.getElementById('padding-slider');
@@ -14,14 +16,21 @@ const paddingValueDisplay = document.getElementById('padding-value');
 const fontSizeSlider = document.getElementById('font-size-slider');
 const fontSizeValueDisplay = document.getElementById('font-size-value');
 const fontFamilySelect = document.getElementById('font-family-select');
-const themeLink = document.getElementById('hljs-theme-link'); // Get the theme link tag
+const themeLink = document.getElementById('hljs-theme-link');
 
 // --- State Variables ---
 let generatedImageDataUrl = null;
 let inputDebounceTimer;
 let styleDebounceTimer; // Separate debounce timer for style changes
 let pondiverseButton = null;
-let detectedLanguage = 'auto';
+
+// --- State Variables ---
+let generatedImageDataUrl = null;
+let inputDebounceTimer;
+let styleDebounceTimer;
+let pondiverseButton = null;
+// let detectedLanguage = 'auto'; // No longer needed globally like this
+let isCopying = false;
 
 // --- Style Customization Logic ---
 
@@ -36,8 +45,10 @@ function applyCustomizations() {
     const fontFamily = fontFamilySelect.value;
     const bgColor = bgColorPicker.value;
     const selectedTheme = themeSelect.value;
+    // Language selection is handled directly in updatePreviewAndGenerateImage
+    // but changing it should trigger a preview update.
 
-    // Update CSS variables on the root element (affects elements using them)
+    // Update CSS variables
     const rootStyle = document.documentElement.style;
     rootStyle.setProperty('--code-padding', padding);
     rootStyle.setProperty('--code-font-size', fontSize);
@@ -52,12 +63,12 @@ function applyCustomizations() {
     updateValueDisplay(paddingSlider, paddingValueDisplay, 'px');
     updateValueDisplay(fontSizeSlider, fontSizeValueDisplay, 'em');
 
-    // Trigger a re-highlight and image regeneration (debounced)
+    // Trigger re-highlight and image regeneration
     clearTimeout(styleDebounceTimer);
     styleDebounceTimer = setTimeout(() => {
          console.log("Applying style changes and regenerating image...");
-         updatePreviewAndGenerateImage(); // Re-run highlighting and image generation
-    }, 250); // Debounce style updates slightly less aggressively than input
+         updatePreviewAndGenerateImage();
+    }, 250);
 }
 
 
@@ -66,73 +77,75 @@ function applyCustomizations() {
 async function updatePreviewAndGenerateImage() {
     console.log("Updating preview and image...");
     const code = codeInput.value;
+    const selectedLanguage = languageSelect.value; // Get selected language override
 
-    // 1. Clear previous highlighting classes potentially left by old theme
-    // codePreview.className = 'hljs'; // Reset before applying new highlight
-
-    // 2. Auto-detect language and get highlighted HTML
+    // 1. Highlight code based on selection
     let result;
+    let displayLangText;
+
     if (code.trim() === '') {
+        // Handle empty input
         result = { value: '', language: 'plaintext' };
-    } else {
-         // Force re-highlighting even if code hasn't changed (theme/style might have)
-        // Use highlight() instead of highlightAuto() if language is known,
-        // but highlightAuto is usually fine and handles language changes.
-        // Need to ensure hljs state is clean if themes change rapidly.
-        // Forcing highlight by passing code directly:
+        displayLangText = 'Detected: plaintext';
+    } else if (selectedLanguage === 'auto') {
+        // Auto-detect language
         result = hljs.highlightAuto(code);
+        displayLangText = `Detected: ${result.language || 'auto'}`;
+    } else {
+        // Force highlighting with the selected language
+        try {
+            // Check if language is supported before highlighting
+            if (hljs.getLanguage(selectedLanguage)) {
+                 result = hljs.highlight(code, { language: selectedLanguage });
+                 displayLangText = `Language: ${selectedLanguage} (Forced)`;
+            } else {
+                 // Fallback if selected language isn't loaded/valid (shouldn't happen with pack)
+                 console.warn(`Language "${selectedLanguage}" not recognized by highlight.js. Falling back to auto-detect.`);
+                 result = hljs.highlightAuto(code);
+                 displayLangText = `Detected: ${result.language || 'auto'} (Fallback)`;
+            }
+        } catch (error) {
+            console.error(`Error highlighting with language "${selectedLanguage}":`, error);
+             // Fallback on error during specific language highlight
+            result = hljs.highlightAuto(code);
+            displayLangText = `Detected: ${result.language || 'auto'} (Error Fallback)`;
+        }
     }
 
-    detectedLanguage = result.language || 'auto';
-    languageDisplay.textContent = `Detected: ${detectedLanguage}`;
+    // Update language display text
+    languageDisplay.textContent = displayLangText;
 
-    // 3. Update preview content
+    // 2. Update preview content
     codePreview.innerHTML = result.value;
-    // Apply the language class *after* setting innerHTML based on result
-    codePreview.className = `hljs language-${detectedLanguage}`;
+    // Apply the correct language class
+    codePreview.className = `hljs language-${result.language || selectedLanguage || 'plaintext'}`;
 
 
-    // 4. Small delay - *May need adjustment after theme loading*
-    // Allow styles (especially new theme) to apply
-    await new Promise(resolve => setTimeout(resolve, 150)); // Slightly longer delay
+    // 3. Small delay for rendering
+    await new Promise(resolve => setTimeout(resolve, 150));
 
-    // 5. Generate image
+    // 4. Generate image
     try {
-        // Capture the container, relying on CSS vars for its style
         const canvas = await html2canvas(codePreviewContainer, {
-            backgroundColor: null, // Use element's background from CSS var
-            scale: 2,
-            logging: false,
-            useCORS: true, // Needed for web fonts / external assets potentially
+            backgroundColor: null, scale: 2, logging: false, useCORS: true,
             onclone: (clonedDoc) => {
-                // Attempt to fix theme loading issue for html2canvas in some browsers
-                // Re-apply the theme link href in the cloned document
                 const clonedThemeLink = clonedDoc.getElementById('hljs-theme-link');
-                if (clonedThemeLink) {
-                     clonedThemeLink.href = themeLink.href;
-                }
+                if (clonedThemeLink) { clonedThemeLink.href = themeLink.href; }
             }
         });
 
-        // 6. Get Data URL
+        // 5. Get Data URL
         generatedImageDataUrl = canvas.toDataURL('image/png');
-        // console.log("Generated Image Data URL:", generatedImageDataUrl.substring(0, 100) + "...");
 
-        // 7. Update display
+        // 6. Update display & Enable buttons
         if (outputImageDisplay) {
-            if (generatedImageDataUrl) {
-                outputImageDisplay.src = generatedImageDataUrl;
-                outputImageDisplay.classList.remove('hidden');
-            } else {
-                outputImageDisplay.classList.add('hidden');
-            }
+            if (generatedImageDataUrl) { /*...*/ outputImageDisplay.src = generatedImageDataUrl; outputImageDisplay.classList.remove('hidden'); }
+            else { /*...*/ outputImageDisplay.classList.add('hidden'); }
         }
 
-        // 8. Enable Pondiverse button
-        if (pondiverseButton && pondiverseButton.disabled) {
-            pondiverseButton.disabled = false;
-            pondiverseButton.textContent = "✶ Share";
-            pondiverseButton.title = "Share to Pondiverse";
+        if (generatedImageDataUrl) {
+            if (pondiverseButton && pondiverseButton.disabled) { /*...*/ pondiverseButton.disabled = false; pondiverseButton.textContent = "✶ Share"; pondiverseButton.title = "Share to Pondiverse"; }
+            if (copyImageButton && copyImageButton.disabled) { /*...*/ copyImageButton.disabled = false; copyImageButton.title = "Copy image to clipboard"; copyImageButton.innerHTML = `...Copy Image`; copyImageButton.classList.remove('copied'); } // Reset copy button state
         }
 
     } catch (error) {
@@ -247,28 +260,29 @@ window.getPondiverseCreation = function() { /* ... (no changes needed here) ... 
     return { type: "CodePond", data: codeInput.value, image: generatedImageDataUrl };
 };
 
-
 // --- Event Listeners ---
 codeInput.addEventListener('input', handleInput);
 codeInput.addEventListener('keydown', handleTabKey);
 
 // Customization Control Listeners
+languageSelect.addEventListener('change', applyCustomizations); // <-- Add listener
 themeSelect.addEventListener('change', applyCustomizations);
 bgColorPicker.addEventListener('input', applyCustomizations);
 paddingSlider.addEventListener('input', applyCustomizations);
 fontSizeSlider.addEventListener('input', applyCustomizations);
 fontFamilySelect.addEventListener('change', applyCustomizations);
 
+// Copy button listener
+copyImageButton.addEventListener('click', copyImageToClipboard);
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
     addPondiverseButton();
-    applyCustomizations(); // Apply initial default styles from controls
-    // Initial highlight if code exists on load
+    applyCustomizations(); // Apply initial default styles
     if (codeInput.value) {
         updatePreviewAndGenerateImage(); // Generate initial preview/image
     } else {
-        // Ensure Pondiverse button is disabled initially if no code
          if(pondiverseButton) pondiverseButton.disabled = true;
+         if(copyImageButton) copyImageButton.disabled = true;
     }
 });

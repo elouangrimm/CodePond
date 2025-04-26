@@ -26,6 +26,7 @@ let inputDebounceTimer;
 let styleDebounceTimer;
 let pondiverseButton = null; // Will hold the button created by addPondiverseButton
 let isCopying = false; // Prevent multiple clicks while copying
+const LOCAL_STORAGE_KEY = 'codePondSnippetCode';
 
 // --- Style Customization Logic ---
 
@@ -104,6 +105,14 @@ async function updatePreviewAndGenerateImage() {
     console.log("Updating preview and image...");
     const code = codeInput.value;
     const selectedLanguage = languageSelect.value;
+
+    try {
+        localStorage.setItem(LOCAL_STORAGE_KEY, code);
+        // console.log("Code saved to localStorage."); // Optional log
+    } catch (e) {
+        console.error("Failed to save code to localStorage:", e);
+        // Handle potential errors (e.g., storage full, privacy settings)
+    }
 
     // 1. Highlight code based on selection
     let result;
@@ -613,6 +622,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (copyImageButton) copyImageButton.disabled = true;
         if (pondiverseButton) pondiverseButton.disabled = true; // Make sure pondiverseButton exists
         return; // Stop initialization
+    }
+
+    if (codeInput) {
+        try {
+            const savedCode = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (savedCode !== null) { // Check explicitly for null
+                codeInput.value = savedCode;
+                console.log("Loaded saved code from localStorage.");
+            } else {
+                console.log("No saved code found in localStorage.");
+            }
+        } catch (e) {
+            console.error("Failed to load code from localStorage:", e);
+        }
     }
 
     // Check if elements exist before adding listeners

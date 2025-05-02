@@ -28,6 +28,8 @@ let pondiverseButton = null; // Will hold the button created by addPondiverseBut
 let isCopying = false; // Prevent multiple clicks while copying
 const LOCAL_STORAGE_KEY = 'codePondSnippetCode';
 
+const PONDIVERSE_INSTANCE_URL = "https://pondiverse.val.run";
+
 // --- Style Customization Logic ---
 
 function updateValueDisplay(slider, display, unit) {
@@ -449,13 +451,12 @@ function addPondiverseButton() {
 
                 try {
                     const response = await fetch(
-                        "https://todepond--e03ca2bc21bb11f094e3569c3dd06744.web.val.run",
+                        new URL("/add-creation", PONDIVERSE_INSTANCE_URL),
                         {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(request),
+                          method: "POST",
+                          body: JSON.stringify(request),
                         }
-                    );
+                      );
 
                     if (response.ok) {
                         closePondiverseDialog(); // Close on success

@@ -48,7 +48,7 @@ body {
     -moz-tab-size: 2;
     box-sizing: border-box;
     width: 100%;
-    min-height: 400px;
+    min-height: 350px;
     background-color: var(--stone-800);
     color: var(--stone-100);
     border: 1px solid var(--stone-600);

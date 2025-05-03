@@ -84,8 +84,8 @@
         <div class="editor-column">
             <div class="editor-wrapper">
                 <p>
-                    put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some
-                        code</span>in here, change the settings, and export your beautiful
+                    put <span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some
+                        code</span> in here, change the settings, and export your beautiful
                     image to the
                     <a href="https://pondiverse.com">pondiverse</a> or just
                     copy the image!
@@ -106,100 +106,98 @@
         <br />
         <br />
 
-        <details id="customization-controls">
-            <summary>Customize Appearance</summary>
-            <div id="customization-controls">
-                <div class="control-group">
-                    <label for="language-select">Language:</label>
-                    <select id="language-select">
-                        <option value="auto">Auto Detect</option>
-                        <option value="plaintext">Plain Text</option>
-                        <option value="javascript">JavaScript</option>
-                        <option value="python">Python</option>
-                        <option value="html">HTML</option>
-                        <option value="json">JSON</option>
-                        <option value="typescript">TypeScript</option>
-                        <option value="markdown">Markdown</option>
-                        <option value="css">CSS</option>
-                        <option value="bash">Bash (Terminal Shell)</option>
-                        <option value="sql">SQL</option>
-                        <option value="java">Java</option>
-                        <option value="csharp">C#</option>
-                        <option value="cpp">C++</option>
-                        <option value="php">PHP</option>
-                        <option value="ruby">Ruby</option>
-                        <option value="go">Go</option>
-                        <option value="rust">Rust</option>
-                        <option value="xml">XML</option>
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="theme-select">Theme:</label>
-                    <select id="theme-select">
-                        <option value="vs2015">VS 2015</option>
-                        <option value="atom-one-dark">Atom One Dark</option>
-                        <option value="monokai-sublime">
-                            Monokai Sublime
-                        </option>
-                        <option value="github-dark">GitHub Dark</option>
-                        <option value="night-owl">Night Owl</option>
-                        <option value="dracula">Dracula</option>
-                        <option value="nord">Nord</option>
-                        <option value="base16/solarized-dark">
-                            Solarized Dark
-                        </option>
-                        <option value="base16/solarized-light">
-                            Solarized Light
-                        </option>
-                        <option value="github">GitHub Light</option>
-                        <option value="atom-one-light">
-                            Atom One Light
-                        </option>
-                        <!-- Add more themes available on CDN -->
-                    </select>
-                </div>
-
-                <div class="control-group">
-                    <label for="bg-color-picker">Background:</label>
-                    <input type="color" id="bg-color-picker" value="#1e1e1e" />
-                    <!-- Default to VS2015 bg -->
-                </div>
-
-                <div class="control-group">
-                    <label for="padding-slider">Padding (px):</label>
-                    <input type="range" id="padding-slider" min="0" max="50" value="20" step="1" />
-                    <span class="value-display" id="padding-value">20px</span>
-                </div>
-
-                <div class="control-group">
-                    <label for="font-size-slider">Font Size (em):</label>
-                    <input type="range" id="font-size-slider" min="0.7" max="1.5" value="1.0" step="0.05" />
-                    <span class="value-display" id="font-size-value">1.0em</span>
-                </div>
-
-                <div class="control-group">
-                    <label for="font-family-select">Font Family:</label>
-                    <select id="font-family-select">
-                        <option value="'JetBrains Mono', 'SF Mono', 'Roboto Mono', 'Cascadia Code', monospace">
-                            JetBrains Mono / Default
-                        </option>
-                        <option value="'Fira Code', monospace">
-                            Fira Code
-                        </option>
-                        <option value="'Source Code Pro', monospace">
-                            Source Code Pro
-                        </option>
-                        <option value="monospace">
-                            Monospace (Browser)
-                        </option>
-                        <option value="Consolas, 'Courier New', monospace">
-                            Consolas / Courier
-                        </option>
-                    </select>
-                </div>
+        <h3>Customize Appearance</h3>
+        <div id="customization-controls">
+            <div class="control-group">
+                <label for="language-select">Language:</label>
+                <select id="language-select">
+                    <option value="auto">Auto Detect</option>
+                    <option value="plaintext">Plain Text</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="python">Python</option>
+                    <option value="html">HTML</option>
+                    <option value="json">JSON</option>
+                    <option value="typescript">TypeScript</option>
+                    <option value="markdown">Markdown</option>
+                    <option value="css">CSS</option>
+                    <option value="bash">Bash (Terminal Shell)</option>
+                    <option value="sql">SQL</option>
+                    <option value="java">Java</option>
+                    <option value="csharp">C#</option>
+                    <option value="cpp">C++</option>
+                    <option value="php">PHP</option>
+                    <option value="ruby">Ruby</option>
+                    <option value="go">Go</option>
+                    <option value="rust">Rust</option>
+                    <option value="xml">XML</option>
+                </select>
             </div>
-        </details>
+
+            <div class="control-group">
+                <label for="theme-select">Theme:</label>
+                <select id="theme-select">
+                    <option value="vs2015">VS 2015</option>
+                    <option value="atom-one-dark">Atom One Dark</option>
+                    <option value="monokai-sublime">
+                        Monokai Sublime
+                    </option>
+                    <option value="github-dark">GitHub Dark</option>
+                    <option value="night-owl">Night Owl</option>
+                    <option value="dracula">Dracula</option>
+                    <option value="nord">Nord</option>
+                    <option value="base16/solarized-dark">
+                        Solarized Dark
+                    </option>
+                    <option value="base16/solarized-light">
+                        Solarized Light
+                    </option>
+                    <option value="github">GitHub Light</option>
+                    <option value="atom-one-light">
+                        Atom One Light
+                    </option>
+                    <!-- Add more themes available on CDN -->
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label for="bg-color-picker">Background:</label>
+                <input type="color" id="bg-color-picker" value="#1e1e1e" />
+                <!-- Default to VS2015 bg -->
+            </div>
+
+            <div class="control-group">
+                <label for="padding-slider">Padding (px):</label>
+                <input type="range" id="padding-slider" min="0" max="50" value="20" step="1" />
+                <span class="value-display" id="padding-value">20px</span>
+            </div>
+
+            <div class="control-group">
+                <label for="font-size-slider">Font Size (em):</label>
+                <input type="range" id="font-size-slider" min="0.7" max="1.5" value="1.0" step="0.05" />
+                <span class="value-display" id="font-size-value">1.0em</span>
+            </div>
+
+            <div class="control-group">
+                <label for="font-family-select">Font Family:</label>
+                <select id="font-family-select">
+                    <option value="'JetBrains Mono', 'SF Mono', 'Roboto Mono', 'Cascadia Code', monospace">
+                        JetBrains Mono / Default
+                    </option>
+                    <option value="'Fira Code', monospace">
+                        Fira Code
+                    </option>
+                    <option value="'Source Code Pro', monospace">
+                        Source Code Pro
+                    </option>
+                    <option value="monospace">
+                        Monospace (Browser)
+                    </option>
+                    <option value="Consolas, 'Courier New', monospace">
+                        Consolas / Courier
+                    </option>
+                </select>
+            </div>
+        </div>
     </div>
 
     <div id="pondiverse-controls">

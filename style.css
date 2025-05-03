@@ -34,9 +34,6 @@ body {
 }
 
 #codeInput {
-    position: absolute;
-    top: 0;
-    left: 0;
     z-index: 2;
     display: block;
     width: 100%;

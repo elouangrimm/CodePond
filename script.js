@@ -26,9 +26,17 @@ let inputDebounceTimer;
 let styleDebounceTimer;
 let pondiverseButton = null; // Will hold the button created by addPondiverseButton
 let isCopying = false; // Prevent multiple clicks while copying
-const LOCAL_STORAGE_KEY = 'codePondSnippetCode';
+const LOCAL_STORAGE_KEY = "codePondSnippetCode";
 
 const PONDIVERSE_INSTANCE_URL = "https://pondiverse.val.run";
+const DEFAULT_INSTANCE = {
+    name: "todepondiverse",
+    home: "https://pondiverse.com/",
+    addCreation: "https://pondiverse.val.run/add-creation",
+    getCreation: "https://pondiverse.val.run/get-creation?id=",
+    getCreationImage: "https://pondiverse.val.run/get-creation-image?id=",
+    getCreations: "https://pondiverse.val.run/get-creations",
+};
 
 // --- Style Customization Logic ---
 
@@ -304,7 +312,7 @@ async function copyImageToClipboard() {
             </svg>Copied!`;
         copyImageButton.classList.add("copied");
 
-        posthog.capture('copied_image') // posthog analytics
+        posthog.capture("copied_image"); // posthog analytics
 
         setTimeout(() => {
             if (
@@ -455,13 +463,13 @@ function addPondiverseButton() {
                     const response = await fetch(
                         new URL("/add-creation", PONDIVERSE_INSTANCE_URL),
                         {
-                          method: "POST",
-                          body: JSON.stringify(request),
+                            method: "POST",
+                            body: JSON.stringify(request),
                         }
-                      );
+                    );
 
                     if (response.ok) {
-                        posthog.capture('sent_to_pondiverse') // posthog analytics
+                        posthog.capture("sent_to_pondiverse"); // posthog analytics
                         closePondiverseDialog(); // Close on success
                     } else {
                         const errorText = await response.text();
@@ -596,6 +604,30 @@ window.getPondiverseCreation = function () {
     };
 };
 
+export async function fetchPondiverseCreation(
+    id,
+    { instance = DEFAULT_INSTANCE } = {}
+) {
+    if (id === undefined || id === null) {
+        throw new Error("You need to provide an id to fetch a creation");
+    }
+    let url = instance.getCreation + id;
+    const idNumber = parseInt(id);
+    if (isNaN(idNumber)) {
+        if (!id.startsWith("http") && !id.startsWith("localhost")) {
+            throw new Error(
+                "You need to provide a valid id or a URL to fetch a creation"
+            );
+        }
+        url = id;
+    }
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+    return await response.json();
+}
+
 // --- Event Listeners ---
 document.addEventListener("DOMContentLoaded", () => {
     if (typeof hljs === "undefined") {
@@ -626,12 +658,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if (codeInput) {
         try {
             const savedCode = localStorage.getItem(LOCAL_STORAGE_KEY);
-            if (savedCode !== null) { // Check explicitly for null
+            if (savedCode !== null) {
+                // Check explicitly for null
                 codeInput.value = savedCode;
             } else {
             }
         } catch (e) {
             console.error("Failed to load code from localStorage:", e);
+        }
+    }
+
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const pondiverseCreationId = urlSearchParams.get("creation");
+    if (pondiverseCreationId) {
+        fetchPondiverseCreation(pondiverseCreationId).then((creation) => {
+            codeInput.value = creation.data;
+        });
+    } else {
+        const savedCode = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (savedCode !== null) {
+            codeInput.value = savedCode;
+        } else {
         }
     }
 

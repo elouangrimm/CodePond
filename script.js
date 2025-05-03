@@ -394,7 +394,6 @@ function addPondiverseButton() {
         if (previewImage) {
             previewImage.onerror = () => {
                 previewImage.style.display = "none";
-                console.warn("Pondiverse preview image failed to load.");
             };
             previewImage.onload = () => {
                 previewImage.style.display = "block";

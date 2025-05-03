@@ -4,18 +4,61 @@
     --default-highlight: var(--fuchsia);
 }
 
+body {
+    max-width: 1400px !important;
+    margin: 0 auto;
+    padding: 30px 25px;
+}
+
+.editor-column {
+    /* New wrapper for editor related items */
+    flex: 1;
+    /* Grow to fill remaining space */
+    min-width: 0;
+    /* Important for flex shrinking */
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-wrapper {
+    position: relative;
+    border-radius: var(--editor-border-radius);
+    overflow: hidden;
+    border: 1px solid var(--editor-border-color);
+    min-height: 400px;
+    /* Give editor a larger default height */
+    flex-grow: 1;
+    /* Allow editor wrapper to grow if needed */
+    margin-bottom: 0.5em;
+    /* Space before language display */
+}
+
 #codeInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: block;
     width: 100%;
-    min-height: 150px;
-    background-color: var(--stone-800);
-    color: var(--stone-100);
-    border: 1px solid var(--stone-600);
-    padding: 10px;
-    font-family: var(--font-mono);
-    font-size: 0.95em;
-    resize: vertical;
+    height: 100%;
+    min-height: inherit;
+    margin: 0;
+    border: none;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--stone-100);
+    padding: var(--editor-padding);
+    font-family: var(--editor-font-family);
+    font-size: var(--editor-font-size);
+    line-height: var(--editor-line-height);
+    white-space: pre;
+    overflow-wrap: normal;
+    overflow: auto;
+    tab-size: 2;
+    -moz-tab-size: 2;
     box-sizing: border-box;
-    margin-bottom: 1em;
+    outline: none;
 }
 
 #outputImageDisplay {
@@ -30,11 +73,12 @@
 
 #pondiverse-controls {
     margin-top: 1.5em;
+    /* Space above buttons */
     display: flex;
-    /* Align buttons nicely */
     gap: 1em;
-    /* Space between buttons */
     flex-wrap: wrap;
+    /* justify-content: flex-end; */
+    /* Optional: align right */
 }
 
 #pondiverse-controls button {
@@ -282,19 +326,18 @@
 
 /* --- Preview Area using CSS Variables --- */
 #codePreviewContainer {
-    /* Use CSS variables for dynamic styles */
-    padding: var(--code-padding, 20px);
-    /* Default value */
-    background-color: var(--code-bg-color, var(--stone-900));
-    /* Default value */
-
-    /* Keep other styles */
-    border: 1px solid var(--stone-700);
+    position: relative;
+    z-index: 1;
     overflow: hidden;
-    min-height: 50px;
-    margin-bottom: 1em;
-    transition: background-color 0.3s ease;
-    /* Smooth background transition */
+    pointer-events: none;
+    min-height: inherit;
+    background-color: var(--editor-bg-color);
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    font-size: var(--editor-font-size);
 }
 
 #codePreviewContainer pre {
@@ -330,14 +373,26 @@
     /* Inherit base color unless theme specifies */
 }
 
+#app-container {
+    display: flex;
+    gap: 2em;
+    /* Space between columns */
+    align-items: flex-start;
+    /* Align top edges */
+    margin-top: 1.5em;
+}
+
 details#customization-controls {
+    flex: 0 0 320px;
+    /* Don't grow, don't shrink, set fixed width */
     border: 1px solid var(--stone-700);
     border-radius: 5px;
-    margin-bottom: 1.5em;
     background-color: var(--stone-900);
-    /* Prevent margin collapse */
     overflow: hidden;
-    /* Or padding-top: 1px; */
+    margin-bottom: 0;
+    /* Remove bottom margin as it's inside flex */
+    align-self: stretch;
+    /* Make it stretch to container height if needed */
 }
 
 details#customization-controls summary {
@@ -434,4 +489,58 @@ details#customization-controls summary::-webkit-details-marker {
     color: var(--stone-400);
     min-width: 40px;
     text-align: right;
+}
+
+@media (max-width: 900px) {
+
+    /* Adjust breakpoint as needed */
+    #app-container {
+        flex-direction: column;
+        /* Stack columns vertically */
+        gap: 1.5em;
+    }
+
+    details#customization-controls {
+        flex: 1 1 auto;
+        /* Allow it to take full width */
+        width: 100%;
+        align-self: auto;
+        /* Reset stretch */
+    }
+
+    .editor-column {
+        width: 100%;
+        /* Ensure editor takes full width */
+    }
+
+    body {
+        padding: 20px 15px;
+        /* Reduce padding */
+    }
+}
+
+@media (max-width: 500px) {
+    body {
+        padding: 15px 10px;
+        font-size: 1em;
+        /* Slightly smaller base font */
+    }
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    .editor-wrapper {
+        min-height: 300px;
+    }
+
+    #codePreviewContainer pre code.hljs {
+        min-height: calc(300px - 2 * var(--editor-padding));
+    }
+
+    #pondiverse-controls {
+        justify-content: center;
+    }
+
+    /* Center buttons */
 }

@@ -1,251 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>CodePond</title>
 
-        <!-- Trackers (sorry, im curious lol) -->
-        <script data-goatcounter="https://elouan.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-        <script data-goatcounter="https://codepond.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-        <script>
-            !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init bs ws ge fs capture De Ai $s register register_once register_for_session unregister unregister_for_session Is getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty xs Ss createPersonProfile Es gs opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing ys debug ks getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-            posthog.init('phc_W4DPbbp1Qbz4lPVtWrFF54GFUabBHpKzNJx9U6fryBZ', {
-                api_host: 'https://posthog.elouan.xyz',
-                ui_host: 'https://us.posthog.com',
-                person_profiles: 'always', // or 'always' to create profiles for anonymous users as well
-            })
-        </script>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodePond</title>
 
-        <meta property="og:url" content="https://codepond.elouan.xyz">
-        <meta property="og:type" content="website">
-        <meta property="og:title" content="CodePond">
-        <meta property="og:description" content="A simple code-to-image app that works with the pondiverse.">
-        <meta property="og:image" content="https://raw.githubusercontent.com/elouangrimm/CodePond/refs/heads/main/thumb.png" />
-        
-        <meta name="twitter:card" content="summary_large_image">
-        <meta property="twitter:domain" content="codepond.elouan.xyz">
-        <meta property="twitter:url" content="https://codepond.elouan.xyz">
-        <meta name="twitter:title" content="CodePond">
-        <meta name="twitter:description" content="A simple code-to-image app that works with the pondiverse.">
-        <meta name="twitter:image" content="https://raw.githubusercontent.com/elouangrimm/CodePond/refs/heads/main/thumb.png">
+    <!-- Trackers (sorry, im curious lol) -->
+    <script data-goatcounter="https://elouan.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script data-goatcounter="https://codepond.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script>
+        !function(e,t){var s,r,o,i;t.__SV||(window.posthog=t,t._i=[],t.init=function(n,a,p){function g(e,t){var s=t.split(".");2==s.length&&(e=e[s[0]],t=s[1]),e[t]=function(){e.push([t].concat(Array.prototype.slice.call(arguments,0)))}}(o=e.createElement("script")).type="text/javascript",o.crossOrigin="anonymous",o.async=!0,o.src=a.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(i=e.getElementsByTagName("script")[0]).parentNode.insertBefore(o,i);var c=t;for(void 0!==p?c=t[p]=[]:p="posthog",c.people=c.people||[],c.toString=function(e){var t="posthog";return"posthog"!==p&&(t+="."+p),e||(t+=" (stub)"),t},c.people.toString=function(){return c.toString(1)+".people (stub)"},s="init bs ws ge fs capture De Ai $s register register_once register_for_session unregister unregister_for_session Is getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty xs Ss createPersonProfile Es gs opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing ys debug ks getPageViewId captureTraceFeedback captureTraceMetric".split(" "),r=0;r<s.length;r++)g(c,s[r]);t._i.push([n,a,p])},t.__SV=1)}(document,window.posthog||[]),
+        posthog.init("phc_W4DPbbp1Qbz4lPVtWrFF54GFUabBHpKzNJx9U6fryBZ", {
+            api_host: "https://posthog.elouan.xyz",
+            ui_host: "https://us.posthog.com",
+            person_profiles: "always",
+        });
+    </script>
 
-        <!-- from elouan.xyz -->
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/gh/elouangrimm/elouan.xyz@main/styles/style.css"
-        />
+    <meta property="og:url" content="https://codepond.elouan.xyz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="CodePond" />
+    <meta property="og:description" content="A simple code-to-image app that works with the pondiverse." />
+    <meta property="og:image"
+        content="https://raw.githubusercontent.com/elouangrimm/CodePond/refs/heads/main/thumb.png" />
 
-        <link rel="stylesheet" href="style.css" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="codepond.elouan.xyz" />
+    <meta property="twitter:url" content="https://codepond.elouan.xyz" />
+    <meta name="twitter:title" content="CodePond" />
+    <meta name="twitter:description" content="A simple code-to-image app that works with the pondiverse." />
+    <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/elouangrimm/CodePond/refs/heads/main/thumb.png" />
 
-        <link
-            id="hljs-theme-link"
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css"
-        />
+    <!-- from elouan.xyz -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/elouangrimm/elouan.xyz@main/styles/style.css" />
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
+    <link rel="stylesheet" href="style.css" />
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js" defer></script> <!-- this also has html -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ruby.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/swift.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js" defer></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js" defer></script>
+    <link id="hljs-theme-link" rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css" />
 
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-            defer
-        ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 
-        <script
-            src="https://cdn.jsdelivr.net/gh/elouangrimm/elouan.xyz@main/scripts/tooltip.js"
-            defer
-        ></script>
-        <!-- tooltip script ^^^^^ -->
-    </head>
-    <body>
-        <h1>CodePond</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/xml.min.js" defer></script>
+    <!-- this also has html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/css.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/csharp.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ruby.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/rust.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/sql.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/markdown.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/typescript.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/swift.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/yaml.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/dockerfile.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/nginx.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/ini.min.js" defer></script>
 
-        <h3>A simple code-to-image app that works with the <a>pondiverse</a>.</h3>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
 
-        <p>
-            put
-            <span
-                class="has-tooltip"
-                data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc."
-                >some code</span
-            >
-            in here, change the settings, and export your beautiful image to the <a href="https://pondiverse.com">pondiverse</a> or just copy the image!
-        </p>
-        <textarea
-            id="codeInput"
-            spellcheck="false"
-            placeholder="Paste your code here..."
-        ></textarea>
-        <i><span id="language-display">Detected: auto</span></i>
+    <script src="https://cdn.jsdelivr.net/gh/elouangrimm/elouan.xyz@main/scripts/tooltip.js" defer></script>
+    <!-- tooltip script ^^^^^ -->
+</head>
+
+<body>
+    <h1>CodePond</h1>
+
+    <h3>
+        A simple code-to-image app that works with the <a>pondiverse</a>.
+    </h3>
+
+    <div id="app-container">
+        <div class="editor-column">
+            <div class="editor-wrapper">
+                <p>
+                    put<span class="has-tooltip" data-tooltip="JS, Python, HTML, CSS, Bash, JSON, etc.">some
+                        code</span>in here, change the settings, and export your beautiful
+                    image to the
+                    <a href="https://pondiverse.com">pondiverse</a> or just
+                    copy the image!
+                </p>
+                <textarea id="codeInput" spellcheck="false" placeholder="Paste your code here..."></textarea>
+            </div>
+            <i><span id="language-display">Detected: auto</span></i>
+
+            <br />
+            <br />
+
+            <h3>Preview</h3>
+            <div id="codePreviewContainer">
+                <pre><code id="codePreview" class="hljs"></code></pre>
+            </div>
+        </div>
 
         <br />
         <br />
-        <div id="customization-controls">
-            <h3>Customize Appearance</h3>
 
-            <div class="control-group">
-                <label for="language-select">Language:</label>
-                <select id="language-select">
-                    <option value="auto">Auto Detect</option>
-                    <option value="plaintext">Plain Text</option>
-                    <option value="javascript">JavaScript</option>
-                    <option value="python">Python</option>
-                    <option value="html">HTML</option>
-                    <option value="json">JSON</option>
-                    <option value="typescript">TypeScript</option>
-                    <option value="markdown">Markdown</option>
-                    <option value="css">CSS</option>
-                    <option value="bash">Bash (Terminal Shell)</option>
-                    <option value="sql">SQL</option>
-                    <option value="java">Java</option>
-                    <option value="csharp">C#</option>
-                    <option value="cpp">C++</option>
-                    <option value="php">PHP</option>
-                    <option value="ruby">Ruby</option>
-                    <option value="go">Go</option>
-                    <option value="rust">Rust</option>
-                    <option value="xml">XML</option>
-                </select>
+        <details id="customization-controls">
+            <summary>Customize Appearance</summary>
+            <div id="customization-controls">
+                <div class="control-group">
+                    <label for="language-select">Language:</label>
+                    <select id="language-select">
+                        <option value="auto">Auto Detect</option>
+                        <option value="plaintext">Plain Text</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="python">Python</option>
+                        <option value="html">HTML</option>
+                        <option value="json">JSON</option>
+                        <option value="typescript">TypeScript</option>
+                        <option value="markdown">Markdown</option>
+                        <option value="css">CSS</option>
+                        <option value="bash">Bash (Terminal Shell)</option>
+                        <option value="sql">SQL</option>
+                        <option value="java">Java</option>
+                        <option value="csharp">C#</option>
+                        <option value="cpp">C++</option>
+                        <option value="php">PHP</option>
+                        <option value="ruby">Ruby</option>
+                        <option value="go">Go</option>
+                        <option value="rust">Rust</option>
+                        <option value="xml">XML</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="theme-select">Theme:</label>
+                    <select id="theme-select">
+                        <option value="vs2015">VS 2015</option>
+                        <option value="atom-one-dark">Atom One Dark</option>
+                        <option value="monokai-sublime">
+                            Monokai Sublime
+                        </option>
+                        <option value="github-dark">GitHub Dark</option>
+                        <option value="night-owl">Night Owl</option>
+                        <option value="dracula">Dracula</option>
+                        <option value="nord">Nord</option>
+                        <option value="base16/solarized-dark">
+                            Solarized Dark
+                        </option>
+                        <option value="base16/solarized-light">
+                            Solarized Light
+                        </option>
+                        <option value="github">GitHub Light</option>
+                        <option value="atom-one-light">
+                            Atom One Light
+                        </option>
+                        <!-- Add more themes available on CDN -->
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="bg-color-picker">Background:</label>
+                    <input type="color" id="bg-color-picker" value="#1e1e1e" />
+                    <!-- Default to VS2015 bg -->
+                </div>
+
+                <div class="control-group">
+                    <label for="padding-slider">Padding (px):</label>
+                    <input type="range" id="padding-slider" min="0" max="50" value="20" step="1" />
+                    <span class="value-display" id="padding-value">20px</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="font-size-slider">Font Size (em):</label>
+                    <input type="range" id="font-size-slider" min="0.7" max="1.5" value="1.0" step="0.05" />
+                    <span class="value-display" id="font-size-value">1.0em</span>
+                </div>
+
+                <div class="control-group">
+                    <label for="font-family-select">Font Family:</label>
+                    <select id="font-family-select">
+                        <option value="'JetBrains Mono', 'SF Mono', 'Roboto Mono', 'Cascadia Code', monospace">
+                            JetBrains Mono / Default
+                        </option>
+                        <option value="'Fira Code', monospace">
+                            Fira Code
+                        </option>
+                        <option value="'Source Code Pro', monospace">
+                            Source Code Pro
+                        </option>
+                        <option value="monospace">
+                            Monospace (Browser)
+                        </option>
+                        <option value="Consolas, 'Courier New', monospace">
+                            Consolas / Courier
+                        </option>
+                    </select>
+                </div>
             </div>
+        </details>
+    </div>
 
-            <div class="control-group">
-                <label for="theme-select">Theme:</label>
-                <select id="theme-select">
-                    <option value="vs2015">VS 2015</option>
-                    <option value="atom-one-dark">Atom One Dark</option>
-                    <option value="monokai-sublime">Monokai Sublime</option>
-                    <option value="github-dark">GitHub Dark</option>
-                    <option value="night-owl">Night Owl</option>
-                    <option value="dracula">Dracula</option>
-                    <option value="nord">Nord</option>
-                    <option value="base16/solarized-dark">
-                        Solarized Dark
-                    </option>
-                    <option value="base16/solarized-light">
-                        Solarized Light
-                    </option>
-                    <option value="github">GitHub Light</option>
-                    <option value="atom-one-light">Atom One Light</option>
-                    <!-- Add more themes available on CDN -->
-                </select>
-            </div>
+    <div id="pondiverse-controls">
+        <!-- pondiverse button -->
 
-            <div class="control-group">
-                <label for="bg-color-picker">Background:</label>
-                <input type="color" id="bg-color-picker" value="#1e1e1e" />
-                <!-- Default to VS2015 bg -->
-            </div>
+        <button id="copy-image-button" disabled title="Generate an image first">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
+                style="vertical-align: -0.125em; margin-right: 0.4em;">
+                <path
+                    d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+                <path
+                    d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+            </svg>Copy Image
+        </button>
+    </div>
 
-            <div class="control-group">
-                <label for="padding-slider">Padding (px):</label>
-                <input
-                    type="range"
-                    id="padding-slider"
-                    min="0"
-                    max="50"
-                    value="20"
-                    step="1"
-                />
-                <span class="value-display" id="padding-value">20px</span>
-            </div>
+    <br />
+    <br />
+    <br />
 
-            <div class="control-group">
-                <label for="font-size-slider">Font Size (em):</label>
-                <input
-                    type="range"
-                    id="font-size-slider"
-                    min="0.7"
-                    max="1.5"
-                    value="1.0"
-                    step="0.05"
-                />
-                <span class="value-display" id="font-size-value">1.0em</span>
-            </div>
+    <hr />
+    <p>
+        check out
+        <a style="--color: var(--default-highlight)" href="https://elouan.xyz">elouan.xyz</a>
+        │ see the
+        <a style="--color: var(--github)" target="_blank" href="https://github.com/elouangrimm/CodePond">source</a>
+        │ me on
+        <a href="https://bsky.app/profile/elouan.xyz" style="--color: var(--bluesky)">bluesky</a>
+        │ see other
+        <a href="https://www.pondiverse.com/explore/">creations on the pondiverse</a>
+    </p>
 
-            <div class="control-group">
-                <label for="font-family-select">Font Family:</label>
-                <select id="font-family-select">
-                    <option
-                        value="'JetBrains Mono', 'SF Mono', 'Roboto Mono', 'Cascadia Code', monospace"
-                    >
-                        JetBrains Mono / Default
-                    </option>
-                    <option value="'Fira Code', monospace">Fira Code</option>
-                    <option value="'Source Code Pro', monospace">
-                        Source Code Pro
-                    </option>
-                    <option value="monospace">Monospace (Browser)</option>
-                    <option value="Consolas, 'Courier New', monospace">
-                        Consolas / Courier
-                    </option>
-                </select>
-            </div>
-        </div>
+    <script src="script.js" defer></script>
+    <div id="tooltip-display" class="tooltip" role="tooltip"></div>
+</body>
 
-        <h3>Preview</h3>
-        <div id="codePreviewContainer">
-            <pre><code id="codePreview" class="hljs"></code></pre>
-        </div>
-
-        <div id="pondiverse-controls">
-            <!-- pondiverse button -->
-
-            <button
-                id="copy-image-button"
-                disabled
-                title="Generate an image first"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    style="vertical-align: -0.125em; margin-right: 0.4em;"
-                >
-                    <path
-                        d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"
-                    />
-                    <path
-                        d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"
-                    /></svg
-                >Copy Image
-            </button>
-        </div>
-
-        <br>
-        <br>
-        <br>
-
-        <hr>
-        <p>check out <a style="--color: var(--default-highlight)" href="https://elouan.xyz">elouan.xyz</a> │ see the <a style="--color: var(--github)" target="_blank" href="https://github.com/elouangrimm/CodePond">source</a> │ me on <a href="https://bsky.app/profile/elouan.xyz" style="--color: var(--bluesky)">bluesky</a> │ see other <a href="https://www.pondiverse.com/explore/">creations on the pondiverse</a></p>
-
-        <script src="script.js" defer></script>
-        <div id="tooltip-display" class="tooltip" role="tooltip"></div>
-    </body>
 </html>

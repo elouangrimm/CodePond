@@ -38,8 +38,7 @@ body {
     display: block;
     height: 100%;
     min-height: inherit;
-    padding: var(--editor-padding);
-    font-family: var(--editor-font-family);
+    font-family: var(--font-mono);
     font-size: var(--editor-font-size);
     line-height: var(--editor-line-height);
     white-space: pre;
@@ -49,9 +48,11 @@ body {
     -moz-tab-size: 2;
     box-sizing: border-box;
     width: 100%;
+    min-height: 150px;
     background-color: var(--stone-800);
     color: var(--stone-100);
     border: 1px solid var(--stone-600);
+    padding: 10px;
     resize: vertical;
     margin-bottom: 1em;
 }

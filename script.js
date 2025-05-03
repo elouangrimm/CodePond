@@ -604,7 +604,7 @@ window.getPondiverseCreation = function () {
     };
 };
 
-export async function fetchPondiverseCreation(
+async function fetchPondiverseCreation(
     id,
     { instance = DEFAULT_INSTANCE } = {}
 ) {

@@ -304,6 +304,8 @@ async function copyImageToClipboard() {
             </svg>Copied!`;
         copyImageButton.classList.add("copied");
 
+        posthog.capture('copied_image') // posthog analytics
+
         setTimeout(() => {
             if (
                 copyImageButton &&
@@ -459,6 +461,7 @@ function addPondiverseButton() {
                       );
 
                     if (response.ok) {
+                        posthog.capture('sent_to_pondiverse') // posthog analytics
                         closePondiverseDialog(); // Close on success
                     } else {
                         const errorText = await response.text();

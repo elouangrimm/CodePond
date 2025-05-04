@@ -330,7 +330,7 @@ body {
     background-color: var(--editor-bg-color);
     padding: 0;
     margin: 0;
-    border: none;
+    border: solid small var(--stone-150);
     border-radius: 0;
     box-sizing: border-box;
     font-size: var(--editor-font-size);

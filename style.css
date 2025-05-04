@@ -327,13 +327,14 @@ body {
     overflow: hidden;
     pointer-events: none;
     min-height: inherit;
-    background-color: var(--editor-bg-color);
-    padding: 0;
+    background-color: var(--code-bg-color);
+    padding: var(--code-padding);
     margin: 0;
     border: solid small var(--stone-150);
     border-radius: 0;
     box-sizing: border-box;
-    font-size: var(--editor-font-size);
+    font-size: var(--code-font-size);
+    font-family: var(--code-font-family);
 }
 
 #codePreviewContainer pre {

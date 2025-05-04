@@ -93,9 +93,9 @@ function applyCustomizations() {
 }
 
 function resetSettings() {
-    $("customization-controls").find("input[type=text]").each(function(){
+    ("#customization-controls").find("input[type=text]").each(function(){
         var defaultVal = $(this).data("default");
-        $(this).val(defaultVal);
+        (this).val(defaultVal);
   });
 }
 

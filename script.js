@@ -93,11 +93,11 @@ function applyCustomizations() {
 }
 
 function resetSettings() {
-    ("#customization-controls").find("input[type=text]").each(function(){
-        var defaultVal = $(this).data("default");
-        (this).val(defaultVal);
-  });
-}
+    $("#customization-controls").find("input[type=text]").each(function() {
+      var defaultVal = $(this).data("default");
+      $(this).val(defaultVal);
+    });
+  }  
 
 // --- Code Snippet Generation Logic ---
 

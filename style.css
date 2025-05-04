@@ -33,6 +33,11 @@ body {
     /* Space before language display */
 }
 
+.dropdown {
+    max-height: 300px;
+    overflow: scroll;
+}
+
 #codeInput {
     z-index: 2;
     display: block;

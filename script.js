@@ -92,6 +92,13 @@ function applyCustomizations() {
     }, 250);
 }
 
+function resetSettings() {
+    $("customization-controls").find("input[type=text]").each(function(){
+        var defaultVal = $(this).data("default");
+        $(this).val(defaultVal);
+  });
+}
+
 // --- Code Snippet Generation Logic ---
 
 async function updatePreviewAndGenerateImage() {

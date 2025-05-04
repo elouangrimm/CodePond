@@ -110,7 +110,7 @@
         <h3>Customize Appearance</h3>
             <div class="control-group">
                 <label for="language-select">Language:</label>
-                <select id="language-select" class="dropdown">
+                <select id="language-select" class="dropdown" data-default="auto">
                     <option value="auto">Auto Detect</option>
                     <option value="plaintext">Plain Text</option>
                     <option value="javascript">JavaScript</option>
@@ -135,7 +135,7 @@
 
             <div class="control-group">
                 <label for="theme-select">Theme:</label>
-                <select id="theme-select" class="dropdown">
+                <select id="theme-select" class="dropdown" data-default="atom-one-dark">
                     <option value="atom-one-dark">Atom One Dark</option>
                     <option value="monokai-sublime">Monokai Sublime</option>
                     <option value="vs2015">VS 2015</option>
@@ -149,18 +149,18 @@
 
             <div class="control-group">
                 <label for="bg-color-picker">Background:</label>
-                <input type="color" id="bg-color-picker" value="#1e1e1e" />
+                <input type="color" id="bg-color-picker" value="#1e1e1e" data-default="#1e1e1e"/>
             </div>
 
             <div class="control-group">
-                <label for="padding-slider">Padding (px):</label>
-                <input type="range" id="padding-slider" min="0" max="50" value="20" step="1" />
+                <label for="padding-slider">Padding:</label>
+                <input type="range" id="padding-slider" min="0" max="40" data-default="20" value="20" step="1" />
                 <span class="value-display" id="padding-value">20px</span>
             </div>
 
             <div class="control-group">
-                <label for="font-size-slider">Font Size (em):</label>
-                <input type="range" id="font-size-slider" min="0.7" max="1.5" value="1.0" step="0.05" />
+                <label for="font-size-slider">Font Size:</label>
+                <input type="range" id="font-size-slider" min="0.75" max="1.25" data-default="1.0" value="1.0" step="0.05" />
                 <span class="value-display" id="font-size-value">1.0em</span>
             </div>
 
@@ -184,6 +184,8 @@
                     </option>
                 </select>
             </div>
+
+            <button onclick="resetSettings()">Reset</button>
         </div>
     </div>
 

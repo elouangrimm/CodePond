@@ -93,11 +93,18 @@ function applyCustomizations() {
 }
 
 function resetSettings() {
-    $("#customization-controls").find("input[type=text]").each(function() {
-      var defaultVal = $(this).data("default");
-      $(this).val(defaultVal);
-    });
-  }  
+    const customizationControls = document.getElementById(
+        "customization-controls"
+    );
+    if (customizationControls) {
+        const textInputs =
+            customizationControls.querySelectorAll("input[type=text]");
+        textInputs.forEach(function (input) {
+            const defaultVal = input.dataset.default;
+            input.value = defaultVal;
+        });
+    }
+}
 
 // --- Code Snippet Generation Logic ---
 

@@ -28,14 +28,14 @@ let pondiverseButton = null; // Will hold the button created by addPondiverseBut
 let isCopying = false; // Prevent multiple clicks while copying
 const LOCAL_STORAGE_KEY = "codePondSnippetCode";
 
-const PONDIVERSE_INSTANCE_URL = "https://pondiverse.val.run";
+const PONDIVERSE_INSTANCE_URL = "https://theoceaniverse.val.run";
 const DEFAULT_INSTANCE = {
-    name: "todepondiverse",
-    home: "https://pondiverse.com/",
-    addCreation: "https://pondiverse.val.run/add-creation",
-    getCreation: "https://pondiverse.val.run/get-creation?id=",
-    getCreationImage: "https://pondiverse.val.run/get-creation-image?id=",
-    getCreations: "https://pondiverse.val.run/get-creations",
+    name: "oceaniverse",
+    home: "https://oceaniverse.elouan.xyz",
+    addCreation: "https://theoceaniverse.val.run/add-creation",
+    getCreation: "https://theoceaniverse.val.run/get-creation?id=",
+    getCreationImage: "https://theoceaniverse.val.run/get-creation-image?id=",
+    getCreations: "https://theoceaniverse.val.run/get-creations",
 };
 
 // --- Style Customization Logic ---
@@ -381,7 +381,7 @@ function addPondiverseButton() {
         dialog.id = "pondiverse-dialog";
         dialog.innerHTML = `
         <form method="dialog"> <!-- Use method="dialog" for easier closing -->
-          <p>Share your code snippet to the <a href="https://pondiverse.com" target="_blank" rel="noopener noreferrer">Pondiverse</a>?</p>
+          <p>Share your code snippet to the <a href="https://pondiverse.com" target="_blank" rel="noopener noreferrer">Oceaniverse</a>?</p>
           <p><em>(Creations auto-delete after 25 hours)</em></p>
           <img id="preview-image" src="" alt="Code Snippet Preview" style="display: none;"> <!-- Start hidden -->
           <label for="pondiverse-name">Title</label>

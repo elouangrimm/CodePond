@@ -7,15 +7,14 @@
     <title>CodePond</title>
 
     <!-- Trackers (sorry, im curious lol) -->
-    <script data-goatcounter="https://elouan.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-    <script data-goatcounter="https://codepond.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
     <script>
-        !function(e,t){var s,r,o,i;t.__SV||(window.posthog=t,t._i=[],t.init=function(n,a,p){function g(e,t){var s=t.split(".");2==s.length&&(e=e[s[0]],t=s[1]),e[t]=function(){e.push([t].concat(Array.prototype.slice.call(arguments,0)))}}(o=e.createElement("script")).type="text/javascript",o.crossOrigin="anonymous",o.async=!0,o.src=a.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(i=e.getElementsByTagName("script")[0]).parentNode.insertBefore(o,i);var c=t;for(void 0!==p?c=t[p]=[]:p="posthog",c.people=c.people||[],c.toString=function(e){var t="posthog";return"posthog"!==p&&(t+="."+p),e||(t+=" (stub)"),t},c.people.toString=function(){return c.toString(1)+".people (stub)"},s="init bs ws ge fs capture De Ai $s register register_once register_for_session unregister unregister_for_session Is getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty xs Ss createPersonProfile Es gs opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing ys debug ks getPageViewId captureTraceFeedback captureTraceMetric".split(" "),r=0;r<s.length;r++)g(c,s[r]);t._i.push([n,a,p])},t.__SV=1)}(document,window.posthog||[]),
-        posthog.init("phc_W4DPbbp1Qbz4lPVtWrFF54GFUabBHpKzNJx9U6fryBZ", {
-            api_host: "https://posthog.elouan.xyz",
-            ui_host: "https://us.posthog.com",
-            person_profiles: "always",
-        });
+        !function (e, t) { var s, r, o, i; t.__SV || (window.posthog = t, t._i = [], t.init = function (n, a, p) { function g(e, t) { var s = t.split("."); 2 == s.length && (e = e[s[0]], t = s[1]), e[t] = function () { e.push([t].concat(Array.prototype.slice.call(arguments, 0))) } } (o = e.createElement("script")).type = "text/javascript", o.crossOrigin = "anonymous", o.async = !0, o.src = a.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (i = e.getElementsByTagName("script")[0]).parentNode.insertBefore(o, i); var c = t; for (void 0 !== p ? c = t[p] = [] : p = "posthog", c.people = c.people || [], c.toString = function (e) { var t = "posthog"; return "posthog" !== p && (t += "." + p), e || (t += " (stub)"), t }, c.people.toString = function () { return c.toString(1) + ".people (stub)" }, s = "init bs ws ge fs capture De Ai $s register register_once register_for_session unregister unregister_for_session Is getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty xs Ss createPersonProfile Es gs opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing ys debug ks getPageViewId captureTraceFeedback captureTraceMetric".split(" "), r = 0; r < s.length; r++)g(c, s[r]); t._i.push([n, a, p]) }, t.__SV = 1) }(document, window.posthog || []),
+            posthog.init("phc_W4DPbbp1Qbz4lPVtWrFF54GFUabBHpKzNJx9U6fryBZ", {
+                api_host: "https://posthog.elouan.xyz/ingest",
+                ui_host: "https://us.posthog.com",
+                person_profiles: "always",
+            });
     </script>
 
     <meta property="og:url" content="https://codepond.elouan.xyz" />
@@ -107,7 +106,7 @@
         <br />
 
         <div id="customization-controls">
-        <h3>Customize Appearance</h3>
+            <h3>Customize Appearance</h3>
             <div class="control-group">
                 <label for="language-select">Language:</label>
                 <select id="language-select" class="dropdown" data-default="auto">
@@ -149,7 +148,7 @@
 
             <div class="control-group">
                 <label for="bg-color-picker">Background:</label>
-                <input type="color" id="bg-color-picker" value="#1e1e1e" data-default="#1e1e1e"/>
+                <input type="color" id="bg-color-picker" value="#1e1e1e" data-default="#1e1e1e" />
             </div>
 
             <div class="control-group">
@@ -160,7 +159,8 @@
 
             <div class="control-group">
                 <label for="font-size-slider">Font Size:</label>
-                <input type="range" id="font-size-slider" min="0.75" max="1.25" data-default="1.0" value="1.0" step="0.05" />
+                <input type="range" id="font-size-slider" min="0.75" max="1.25" data-default="1.0" value="1.0"
+                    step="0.05" />
                 <span class="value-display" id="font-size-value">1.0em</span>
             </div>
 

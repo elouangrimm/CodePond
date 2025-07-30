@@ -28,14 +28,15 @@ let pondiverseButton = null; // Will hold the button created by addPondiverseBut
 let isCopying = false; // Prevent multiple clicks while copying
 const LOCAL_STORAGE_KEY = "codePondSnippetCode";
 
-const PONDIVERSE_INSTANCE_URL = "https://theoceaniverse.val.run";
+const PONDIVERSE_INSTANCE_URL = "https://pondiverse.val.run/";
 const DEFAULT_INSTANCE = {
-    name: "oceaniverse",
-    home: "https://oceaniverse.elouan.xyz",
-    addCreation: "https://theoceaniverse.val.run/add-creation",
-    getCreation: "https://theoceaniverse.val.run/get-creation?id=",
-    getCreationImage: "https://theoceaniverse.val.run/get-creation-image?id=",
-    getCreations: "https://theoceaniverse.val.run/get-creations",
+    name: "todepondiverse",
+    home: "https://pondiverse.com/",
+    addCreation: "https://pondiverse.val.run/add-creation",
+    getCreation: "https://pondiverse.val.run/get-creation?id=",
+    getCreationImage: "https://pondiverse.val.run/get-creation-image?id=",
+    getCreations: "https://pondiverse.val.run/get-creations",
+    deleteCreation: "https://pondiverse.val.run/delete-creation",
 };
 
 // --- Style Customization Logic ---
